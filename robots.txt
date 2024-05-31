@@ -1,20 +1,20 @@
 User-agent: *
-Disallow: */car-games.html
-Disallow: */all-games.html
-Disallow: */3d-games.html
-Disallow: */stickman-games.html
-Disallow: */update.html
-Disallow: */driving-games.html 
-Disallow: */adventure-games.html 
-Disallow: */sport-games.html 
-Disallow: */soccer-games.html 
-Disallow: *
-Disallow: *
-Disallow: *
-Disallow: *
-Disallow: *
-Disallow: *
-Disallow: *
-Disallow: *
-Disallow: *
-Disallow: *
+Disallow: /car-games.html
+Disallow: /all-games.html
+Disallow: /3d-games.html
+Disallow: /stickman-games.html
+Disallow: /update.html
+Disallow: /driving-games.html 
+Disallow: /adventure-games.html 
+Disallow: /sport-games.html 
+Disallow: /soccer-games.html 
+Disallow: 
+Disallow: 
+Disallow: 
+Disallow: 
+Disallow: 
+Disallow: 
+Disallow: 
+Disallow: 
+Disallow: 
+Disallow: 
