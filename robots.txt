@@ -1,2 +1,2 @@
 User-agent: *
-Disallow */car-games.html
+Disallow: */car-games.html
