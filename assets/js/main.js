@@ -102,12 +102,12 @@ JS INDEX
 		});
 
 		$(".fag-slide").on("translate.owl.carousel", function () {
-			$(".fag-main-slide h2, .fag-main-slide p").removeClass("animated fadeInUp").css("opacity", "0");
+			$(".fag-main-slide h1, .fag-main-slide p").removeClass("animated fadeInUp").css("opacity", "0");
 			$(".fag-main-slide .fag-btn-outline").removeClass("animated fadeInDown").css("opacity", "0");
 			$(".fag-main-slide h3").removeClass("animated fadeInLeft").css("opacity", "0");
 		});
 		$(".fag-slide").on("translated.owl.carousel", function () {
-			$(".fag-main-slide h2, .fag-main-slide p").addClass("animated fadeInUp").css("opacity", "1");
+			$(".fag-main-slide h1, .fag-main-slide p").addClass("animated fadeInUp").css("opacity", "1");
 			$(".fag-main-slide .fag-btn-outline").addClass("animated fadeInDown").css("opacity", "1");
 			$(".fag-main-slide h3").addClass("animated fadeInLeft").css("opacity", "1");
 		});
