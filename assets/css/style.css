@@ -282,7 +282,7 @@ li {
     margin: 0 auto 30px;
 }
 
-.site-heading h1 {
+.site-heading h2 {
     text-transform: uppercase;
     font-size: 60px;
     line-height: 45px;
@@ -297,7 +297,7 @@ li {
     transition: all 850ms ease
 }
 
-.site-heading h1:after {
+.site-heading h2:after {
     position: absolute;
     content: "";
     width: 0px;
