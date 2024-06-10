@@ -8,13 +8,3 @@ Disallow: /driving-games.html
 Disallow: /adventure-games.html 
 Disallow: /sport-games.html 
 Disallow: /soccer-games.html 
-Disallow: 
-Disallow: 
-Disallow: 
-Disallow: 
-Disallow: 
-Disallow: 
-Disallow: 
-Disallow: 
-Disallow: 
-Disallow: 
