@@ -62,13 +62,6 @@ This files contents are outlined below >>>>
 /*================================================
 02 - DEFAULT CSS
 ==================================================*/
-<style>
-
-        .ad-banner {
-            margin-left: auto; /* Push the ad banner to the right */
-        } 
-</style>
-
 * {
     cursor: none !important;
 }
