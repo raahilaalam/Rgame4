@@ -63,9 +63,32 @@ This files contents are outlined below >>>>
 02 - DEFAULT CSS
 ==================================================*/
 <style>
-.ad-banner {
+ <style>
+        .navbar {
+            background-color: #1a1a1a; /* Adjust the background color as needed */
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            padding: 0;
+            margin: 0;
+        }
+        .navbar li {
+            margin: 0 10px;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+        }
+        .ad-banner {
             margin-left: auto; /* Push the ad banner to the right */
-        }</style>
+        }
+    </style>
+</style>
 
 * {
     cursor: none !important;
