@@ -69,6 +69,16 @@ This files contents are outlined below >>>>
     cursor: none !important;
 }
 
+.lazy {
+    opacity: 0;
+    transition: opacity 0.3s ease-in;
+}
+
+.lazy-loaded {
+    opacity: 1;
+}
+
+
 
 html {
     overflow-y: scroll !important;
