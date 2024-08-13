@@ -548,7 +548,7 @@ li {
 ==================================================*/
 
 .fag-breadcrumb-area {
-    padding: 170px 0 100px;
+        padding: 70px 0 0;
     background: url(../img/breadcrumb_bg.jpg) no-repeat scroll center center/cover
 }
 
