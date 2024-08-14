@@ -301,7 +301,7 @@ li {
     margin-bottom: 30px;
     font-weight: 700;
     display: block;
-    color: #ff7a21;
+    color: #fff;
     letter-spacing: 0.03em;
     position: relative;
     padding-bottom: 5px;
@@ -330,7 +330,7 @@ li {
 }
 
 .site-heading h2 span {
-    color: #ff7a21
+    color: #ff7a21;
 }
 
 .site-heading p {
