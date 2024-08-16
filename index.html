@@ -915,6 +915,50 @@
     <script src="assets/js/clock-custom.js"></script>
     <!--Main js-->
     <script src="assets/js/main.js"></script>
+
+
+
+	<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        let adBlockDetected = false;
+        
+        // Create a hidden div with a class name that is commonly blocked by ad blockers
+        let adBlockTest = document.createElement('div');
+        adBlockTest.className = 'ad-banner';
+        adBlockTest.style.display = 'none';
+        document.body.appendChild(adBlockTest);
+
+        // Check if the element is blocked
+        if (adBlockTest.offsetHeight === 0) {
+            adBlockDetected = true;
+        }
+
+        // Remove the test element
+        adBlockTest.remove();
+
+        // Handle the detection
+        if (adBlockDetected) {
+            alert('It seems like you’re using an ad blocker. Please consider supporting us by disabling it.');
+            // You can also redirect or show a message
+            // window.location.href = '/adblocker-detected.html';
+        }
+    });
+</script>
+<script>
+    if (adBlockDetected) {
+        document.getElementById('adblock-message').style.display = 'block';
+    }
+</script>
+
+<div id="adblock-message" style="display: none;">
+    <p>Please consider disabling your ad blocker or whitelist our site to support us.</p>
+</div>
+<script>
+    if (adBlockDetected) {
+        window.location.href = '/adblocker-detected.html';
+    }
+</script>
+
 	
 </body>
 </html>
