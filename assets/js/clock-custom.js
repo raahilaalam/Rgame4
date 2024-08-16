@@ -10,6 +10,7 @@
 
 	jQuery(document).ready(function ($) {
 
+		// Countdown timer
 		const second = 1000,
 			minute = second * 60,
 			hour = minute * 60,
@@ -37,6 +38,17 @@
 				gtag('config', 'G-6BPGNZNTLZ');
 			});
 		})();
+
+		// Google Ad Manager code
+		(function() {
+			window.googletag = window.googletag || {cmd: []};
+			googletag.cmd.push(function() {
+				googletag.defineSlot('/23079347111/Displayads', [970, 250], 'div-gpt-ad-1723799147209-0').addService(googletag.pubads());
+				googletag.pubads().enableSingleRequest();
+				googletag.enableServices();
+			});
+		})();
+		
 	});
 
 }(jQuery));
