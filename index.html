@@ -917,7 +917,18 @@
     <!--Main js-->
     <script src="assets/js/main.js"></script>
 
-
+<script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
+<script>
+    window.googletag = window.googletag || { cmd: [] };
+    var interstitialSlot;
+    googletag.cmd.push(function () {
+       interstitialSlot = googletag.defineOutOfPageSlot('/22084072449/interstitial',googletag.enums.OutOfPageFormat.INTERSTITIAL).addService(googletag.pubads());
+      googletag.enableServices();
+    });
+    googletag.cmd.push(function () {
+    googletag.display(interstitialSlot);
+    });
+  </script>
 	
 </body>
 </html>
