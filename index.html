@@ -926,6 +926,27 @@
     <script src="assets/js/clock-custom.js"></script>
     <!--Main js-->
     <script src="assets/js/main.js"></script>
+
+
+	<!-- AdBlock Dialog Box -->
+<div id="adBlockDialog" style="display:none;">
+    <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 9999;">
+        <div style="position: relative; margin: 10% auto; padding: 20px; background: white; width: 300px; text-align: center; border-radius: 8px;">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Information_or_notice_icon.png/120px-Information_or_notice_icon.png" style="width: 50px;">
+            <h3>Please allow ads on our site</h3>
+            <p>Looks like you're using an ad blocker. We rely on advertising to help fund our site.</p>
+            <button onclick="closeAdBlockDialog()" style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Allow ads</button>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Style for AdBlock Dialog */
+    #adBlockDialog {
+        font-family: Arial, sans-serif;
+    }
+</style>
+
 	
 </body>
 </html>
