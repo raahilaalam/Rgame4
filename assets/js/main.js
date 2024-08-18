@@ -114,6 +114,24 @@ JS INDEX
 
 
 		/* 
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    const banner = document.getElementById("cookie-consent-banner");
+    const acceptButton = document.getElementById("accept-cookies");
+
+    // Check if the user has already accepted cookies
+    if (!localStorage.getItem("cookiesAccepted")) {
+        banner.style.display = "block"; // Show the banner
+    }
+
+    acceptButton.addEventListener("click", function() {
+        localStorage.setItem("cookiesAccepted", "true"); // Save the user's choice
+        banner.style.display = "none"; // Hide the banner
+    });
+});
+
+  
 		=================================================================
 		04 - Testimonial Slider JS
 		=================================================================	
