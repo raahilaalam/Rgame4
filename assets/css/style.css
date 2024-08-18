@@ -80,6 +80,33 @@ This files contents are outlined below >>>>
 
 
 
+.cookie-consent-banner {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #333;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    z-index: 1000;
+    display: none; /* Hidden by default */
+}
+
+.cookie-consent-banner p {
+    margin: 0;
+    display: inline;
+}
+
+.cookie-consent-banner button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin-left: 20px;
+    cursor: pointer;
+}
+
+
 
 
 /* Style the search box container */
