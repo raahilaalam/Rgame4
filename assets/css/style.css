@@ -389,7 +389,7 @@ li {
     transition: all 850ms ease
 }
 
-.site-heading h2:after {
+.site-heading h1:after {
     position: absolute;
     content: "";
     width: 0px;
@@ -400,7 +400,7 @@ li {
     left: 50%;
     top: 100%;
     -webkit-transform: translate(-50%, 100%);
-            transform: translate(-50%, 100%);
+	transform: translate(-50%, 100%);
     -webkit-transition: all 850ms ease;
     transition: all 850ms ease
 }
