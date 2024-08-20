@@ -10,9 +10,6 @@
 
 	jQuery(document).ready(function ($) {
 
-		// Redirect to the main page
-		window.location.href = "https://faf-games.github.io/";
-
 		const second = 1000,
 			minute = second * 60,
 			hour = minute * 60,
