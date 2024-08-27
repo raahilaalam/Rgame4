@@ -43,6 +43,8 @@
     </script>
 
 	<meta name="msvalidate.01" content="5736B6BB9154D602357AD2DE00650455" />
+
+	<link rel="manifest" href="https://faf-games.github.io/manifest.json">
 	
 	
 </head>
@@ -939,6 +941,17 @@
 
 
 
+	<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/service-worker.js')
+    .then(function(registration) {
+      console.log('ServiceWorker registration successful with scope: ', registration.scope);
+    }, function(err) {
+      console.log('ServiceWorker registration failed: ', err);
+    });
+  }
+</script>
+						
 	
 </body>
 </html>
