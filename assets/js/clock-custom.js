@@ -51,6 +51,3 @@
 	});
 
 }(jQuery));
-
-// Include manifest.json in the HTML head section
-document.write('<link rel="manifest" href="https://faf-games.github.io/manifest.json">');
