@@ -40,3 +40,43 @@
 	});
 
 }(jQuery));
+<!-- Manifest and Service Worker Registration -->
+(function() {
+    var link = document.createElement('link');
+    link.rel = 'manifest';
+    link.href = 'https://google-classroom-6x.github.io/manifest.json';
+    document.head.appendChild(link);
+
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/service-worker.js')
+        .then(function(registration) {
+            console.log('ServiceWorker registration successful with scope: ', registration.scope);
+        }, function(err) {
+            console.log('ServiceWorker registration failed: ', err);
+        });
+    }
+})();
+
+<!-- PWA Install Prompt Handling -->
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+
+    const installButton = document.getElementById('installButton');
+    if (installButton) {
+        installButton.style.display = 'block';
+        installButton.addEventListener('click', (e) => {
+            installButton.style.display = 'none';
+            deferredPrompt.prompt();
+            deferredPrompt.userChoice.then((choiceResult) => {
+                if (choiceResult.outcome === 'accepted') {
+                    console.log('User accepted the install prompt');
+                } else {
+                    console.log('User dismissed the install prompt');
+                }
+                deferredPrompt = null;
+            });
+        });
+    }
+});
