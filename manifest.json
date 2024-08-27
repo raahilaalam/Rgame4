@@ -8,12 +8,12 @@
   "description": "Unblocked Games Premium: Enjoy lots of Unblocked Games that you can play anywhere, like school or work. Easy to start, no need to download, with many games to choose from. ",
   "icons": [
     {
-      "src": "/",
+      "src": "/assets/img/pwa192x192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/",
+      "src": "/assets/img/pwa512x512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
