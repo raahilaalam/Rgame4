@@ -1,43 +1,37 @@
 let deferredPrompt;
 const pwaPopup = document.getElementById('pwa-popup');
 const installButton = document.getElementById('install-button');
-const closePopup = document.getElementById('close-popup');
+const closeButton = document.getElementById('close-button');
 
-// Show the popup when the user visits the site
-window.addEventListener('load', () => {
-  pwaPopup.style.display = 'flex';
-});
-
-// Handle the install button click
-installButton.addEventListener('click', () => {
-  pwaPopup.style.display = 'none';
-  if (deferredPrompt) {
-    deferredPrompt.prompt();
-    deferredPrompt.userChoice.then(choiceResult => {
-      if (choiceResult.outcome === 'accepted') {
-        console.log('PWA installed');
-      } else {
-        console.log('PWA installation dismissed');
-      }
-      deferredPrompt = null;
-    });
+window.addEventListener('beforeinstallprompt', (e) => {
+  // Prevent the mini-infobar from appearing
+  e.preventDefault();
+  // Stash the event so it can be triggered later
+  deferredPrompt = e;
+  // Check if the PWA is already installed
+  if (!window.matchMedia('(display-mode: standalone)').matches) {
+    pwaPopup.style.display = 'flex'; // Show the popup
   }
 });
 
-// Handle the close button click
-closePopup.addEventListener('click', () => {
+installButton.addEventListener('click', () => {
+  pwaPopup.style.display = 'none'; // Hide the popup
+  deferredPrompt.prompt(); // Show the install prompt
+  deferredPrompt.userChoice.then((choiceResult) => {
+    if (choiceResult.outcome === 'accepted') {
+      console.log('User accepted the A2HS prompt');
+    } else {
+      console.log('User dismissed the A2HS prompt');
+    }
+    deferredPrompt = null;
+  });
+});
+
+closeButton.addEventListener('click', () => {
+  pwaPopup.style.display = 'none'; // Hide the popup
+});
+
+// Hide the popup if the app is already installed
+if (window.matchMedia('(display-mode: standalone)').matches) {
   pwaPopup.style.display = 'none';
-});
-
-// Listen for the beforeinstallprompt event
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-  pwaPopup.style.display = 'flex';
-});
-
-// Listen for the appinstalled event
-window.addEventListener('appinstalled', (e) => {
-  console.log('PWA was installed');
-  // Optionally, you can hide the popup or perform another action here
-});
+}
