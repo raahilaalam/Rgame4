@@ -1,15 +1,14 @@
-// Google Analytics code
-		(function() {
-			$.getScript('https://www.googletagmanager.com/gtag/js?id=G-6BPGNZNTLZ', function() {
-				window.dataLayer = window.dataLayer || [];
-				function gtag(){ dataLayer.push(arguments); }
-				gtag('js', new Date());
-				gtag('config', 'G-6BPGNZNTLZ');
-			});
-		})();
-
-
 $(window).on('load', function () {
+
+    // Google Analytics code
+    (function() {
+        $.getScript('https://www.googletagmanager.com/gtag/js?id=G-6BPGNZNTLZ', function() {
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){ dataLayer.push(arguments); }
+            gtag('js', new Date());
+            gtag('config', 'G-6BPGNZNTLZ');
+        });
+    })();
 
     // Dynamically add the manifest link
     const manifestLink = document.createElement('link');
@@ -45,7 +44,7 @@ $(window).on('load', function () {
 
     // PWA Installation Code
     let deferredPrompt;
-    
+
     // Create and append the popup HTML
     const popupHTML = `
         <div id="pwa-popup" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); color: white; text-align: center; z-index: 1000;  flex-wrap: wrap; flex-direction: row;">
@@ -68,17 +67,34 @@ $(window).on('load', function () {
         e.preventDefault(); // Prevent the default prompt
         deferredPrompt = e;
         popup.style.display = 'flex'; // Show the popup
+
+        // Track that the install prompt was shown
+        gtag('event', 'PWA Install Prompt', {
+            'event_category': 'PWA',
+            'event_label': 'Install Prompt Shown'
+        });
     });
 
     // Handle the install button click
     installButton.addEventListener('click', () => {
         if (deferredPrompt) {
             deferredPrompt.prompt(); // Show the install prompt
+
             deferredPrompt.userChoice.then((choiceResult) => {
                 if (choiceResult.outcome === 'accepted') {
                     console.log('User accepted the A2HS prompt');
+                    // Track acceptance
+                    gtag('event', 'PWA Install Accepted', {
+                        'event_category': 'PWA',
+                        'event_label': 'Install Accepted'
+                    });
                 } else {
                     console.log('User dismissed the A2HS prompt');
+                    // Track dismissal
+                    gtag('event', 'PWA Install Dismissed', {
+                        'event_category': 'PWA',
+                        'event_label': 'Install Dismissed'
+                    });
                 }
                 deferredPrompt = null;
                 popup.style.display = 'none'; // Hide the popup
@@ -89,6 +105,16 @@ $(window).on('load', function () {
     // Handle the close popup button click
     closePopupButton.addEventListener('click', () => {
         popup.style.display = 'none'; // Hide the popup
+    });
+
+    // Listen for the 'appinstalled' event
+    window.addEventListener('appinstalled', () => {
+        console.log('PWA was installed');
+        // Track the PWA installation
+        gtag('event', 'PWA Installed', {
+            'event_category': 'PWA',
+            'event_label': 'PWA Installed'
+        });
     });
 
 });
