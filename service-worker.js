@@ -1,28 +1,25 @@
-const CACHE_NAME = 'my-site-cache-v1';
-const urlsToCache = [
+const cacheName = 'faf-games-cache-v1';
+const filesToCache = [
   '/',
-  '/styles/main.css',
-  '/script/main.js',
-  '/offline.html'
+  '/index.html',
+  '/styles.css',
+  '/script.js',
+  '/path/to/icon-192x192.png',
+  '/path/to/icon-512x512.png'
 ];
 
 self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => {
-        return cache.addAll(urlsToCache);
-      })
+    caches.open(cacheName).then(cache => {
+      return cache.addAll(filesToCache);
+    })
   );
 });
 
 self.addEventListener('fetch', event => {
   event.respondWith(
-    caches.match(event.request)
-      .then(response => {
-        if (response) {
-          return response;
-        }
-        return fetch(event.request);
-      })
+    caches.match(event.request).then(response => {
+      return response || fetch(event.request);
+    })
   );
 });
