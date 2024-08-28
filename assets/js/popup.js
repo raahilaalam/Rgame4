@@ -3,6 +3,7 @@ const pwaPopup = document.getElementById('pwa-popup');
 const installButton = document.getElementById('install-button');
 const closeButton = document.getElementById('close-button');
 
+// Handle the beforeinstallprompt event
 window.addEventListener('beforeinstallprompt', (e) => {
   // Prevent the mini-infobar from appearing
   e.preventDefault();
@@ -14,6 +15,7 @@ window.addEventListener('beforeinstallprompt', (e) => {
   }
 });
 
+// Handle the install button click
 installButton.addEventListener('click', () => {
   pwaPopup.style.display = 'none'; // Hide the popup
   deferredPrompt.prompt(); // Show the install prompt
@@ -27,6 +29,7 @@ installButton.addEventListener('click', () => {
   });
 });
 
+// Handle the close button click
 closeButton.addEventListener('click', () => {
   pwaPopup.style.display = 'none'; // Hide the popup
 });
@@ -35,3 +38,15 @@ closeButton.addEventListener('click', () => {
 if (window.matchMedia('(display-mode: standalone)').matches) {
   pwaPopup.style.display = 'none';
 }
+
+// Track the PWA installation
+window.addEventListener('appinstalled', (e) => {
+  console.log('PWA was installed');
+
+  // Track the installation with Google Analytics
+  gtag('event', 'pwa_install', {
+    'event_category': 'PWA',
+    'event_label': 'Installation',
+    'value': 1
+  });
+});
