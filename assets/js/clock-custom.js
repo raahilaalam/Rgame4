@@ -62,6 +62,7 @@
 }(jQuery));
 
 <!-- Manifest and Service Worker Registration -->
+<script>
 (function() {
     var link = document.createElement('link');
     link.rel = 'manifest';
