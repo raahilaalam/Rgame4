@@ -5,6 +5,26 @@
     Copyright 2020
 *************************************************************/
 
+<!-- Include Popup HTML -->
+<div id="pwa-popup" class="pwa-popup">
+  <div class="pwa-popup-content">
+    <h2>Install Our site</h2>
+    <p>Get our site for a better experience.</p>
+    <button id="install-button">Install</button>
+    <button id="close-button">Close</button>
+  </div>
+</div>
+
+<!-- Link to CSS -->
+<link rel="stylesheet" href="https://faf-games.github.io/assets/css/styles.css">
+
+<!-- Link to Popup JavaScript -->
+<script src="https://faf-games.github.io/assets/js/popup.js"></script>
+
+
+
+
+
 (function ($) {
 	"use strict";
 
