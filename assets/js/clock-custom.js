@@ -45,7 +45,7 @@
 (function() {
     var link = document.createElement('link');
     link.rel = 'manifest';
-    link.href = 'https://faf-games/manifest.json';
+    link.href = 'https://faf-games.github.io/manifest.json';
     document.head.appendChild(link);
 
     if ('serviceWorker' in navigator) {
