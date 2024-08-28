@@ -1,5 +1,11 @@
 $(window).on('load', function () {
 
+    // Dynamically add the manifest link
+    const manifestLink = document.createElement('link');
+    manifestLink.rel = 'manifest';
+    manifestLink.href = 'https://faf-games.github.io/manifest.json';
+    document.head.appendChild(manifestLink);
+
     var $container = $('.gamesContainer');
     $container.isotope({
         filter: '*',
