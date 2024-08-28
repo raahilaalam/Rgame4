@@ -45,7 +45,7 @@
 (function() {
     var link = document.createElement('link');
     link.rel = 'manifest';
-    link.href = 'https://google-classroom-6x.github.io/manifest.json';
+    link.href = 'https://faf-games/manifest.json';
     document.head.appendChild(link);
 
     if ('serviceWorker' in navigator) {
