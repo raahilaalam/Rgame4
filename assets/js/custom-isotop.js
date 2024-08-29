@@ -49,9 +49,7 @@ $(window).on('load', function () {
     const popupHTML = `
        // PWA Installation Code
     let deferredPrompt;
-
-    // Create and append the popup HTML
-    const popupHTML = `
+   
         <div id="pwa-popup" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); color: white; text-align: center; z-index: 1000;  flex-wrap: wrap; flex-direction: row;">
             <div style="margin: 20% auto; padding: 20px; background: #333; border-radius: 10px; width: 80%; max-width: 600px;">
                 <h2>Install our FAF Games to Play Unblocked Games</h2>
