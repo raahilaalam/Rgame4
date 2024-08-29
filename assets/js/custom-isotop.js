@@ -1,3 +1,4 @@
+
 $(window).on('load', function () {
 
     // Google Analytics code
@@ -16,7 +17,6 @@ $(window).on('load', function () {
     manifestLink.href = 'https://faf-games.github.io/manifest.json';
     document.head.appendChild(manifestLink);
 
-    // Initialize Isotope
     var $container = $('.gamesContainer');
     $container.isotope({
         filter: '*',
@@ -117,4 +117,5 @@ $(window).on('load', function () {
             'event_label': 'PWA Installed'
         });
     });
+
 });
