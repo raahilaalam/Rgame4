@@ -42,51 +42,6 @@ $(window).on('load', function () {
         return false;
     });
 
-   
-$(window).on('load', function () {
-
-    // Google Analytics code
-    (function() {
-        $.getScript('https://www.googletagmanager.com/gtag/js?id=G-6BPGNZNTLZ', function() {
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){ dataLayer.push(arguments); }
-            gtag('js', new Date());
-            gtag('config', 'G-6BPGNZNTLZ');
-        });
-    })();
-
-    // Dynamically add the manifest link
-    const manifestLink = document.createElement('link');
-    manifestLink.rel = 'manifest';
-    manifestLink.href = 'https://faf-games.github.io/manifest.json';
-    document.head.appendChild(manifestLink);
-
-    var $container = $('.gamesContainer');
-    $container.isotope({
-        filter: '*',
-        animationOptions: {
-            duration: 750,
-            easing: 'linear',
-            queue: false
-        }
-    });
-
-    $('.projectFilter a').on('click', function () {
-        $('.projectFilter .current').removeClass('current');
-        $(this).addClass('current');
-
-        var selector = $(this).attr('data-filter');
-        $container.isotope({
-            filter: selector,
-            animationOptions: {
-                duration: 750,
-                easing: 'linear',
-                queue: false
-            }
-        });
-        return false;
-    });
-
     // PWA Installation Code
     let deferredPrompt;
 
