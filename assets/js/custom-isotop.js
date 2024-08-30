@@ -1,3 +1,24 @@
+// Create a <style> element
+var style = document.createElement('style');
+style.type = 'text/css';
+
+// Add CSS rules
+style.innerHTML = `
+  #install-button:hover {
+    background: linear-gradient(135deg, #ff4500, #ff7f50);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    transform: scale(1.05);
+  }
+
+  #close-popup:hover {
+    color: #555;
+  }
+`;
+
+// Append the <style> element to the document head
+document.head.appendChild(style);
+
+
 
 $(window).on('load', function () {
 
