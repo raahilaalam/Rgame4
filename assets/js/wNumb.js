@@ -356,14 +356,3 @@ var FormatOptions = [
 
 }));
 
-
-// Add Fullscreen Button functionality here
-document.getElementById("fullscreenBtn").addEventListener("click", function() {
-    if (document.fullscreenElement) {
-        // Exit fullscreen
-        document.exitFullscreen();
-    } else {
-        // Enter fullscreen for the game container
-        document.documentElement.requestFullscreen();
-    }
-});
