@@ -54,7 +54,7 @@ $(window).on('load', function () {
     <h2 style="font-size: 22px; margin-bottom: 15px; color: #2c3e50;">Hey there! 👋</h2>
     <p style="font-size: 16px; color: #444; margin-bottom: 25px;">Add to Home Screen for Quick Access to Unblocked Games!</p>
     <button id="install-button" style="padding: 12px 28px; font-size: 18px; cursor: pointer; background-color: #ff7f50; color: white; border: none; border-radius: 25px; margin-right: 10px; transition: background-color 0.3s;">
-      <i class="fas fa-download" style="margin-right: 8px;"></i>Add to Home Screen
+      <i class="fa" style="margin-right: 8px;"></i>Add to Home Screen
     </button>
     <button id="close-popup" style="padding: 12px 28px; font-size: 18px; cursor: pointer; background-color: transparent; color: #888; border: none; border-radius: 25px; transition: color 0.3s;">
       Not Now
