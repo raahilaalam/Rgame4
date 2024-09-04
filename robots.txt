@@ -1,4 +1,4 @@
 User-agent: *
-Disallow: /private/
-Disallow: /admin/
-Disallow: /temp/
+Allow: /
+
+Sitemap: https://faf-games.github.io/sitemap.xml
