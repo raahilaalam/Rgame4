@@ -278,11 +278,11 @@
             margin-top: 20px
         }
 
-	     /* CSS for Fullscreen Button */
+      /* CSS for Fullscreen Button */
         .fullscreen-btn {
-            display: inline-flex;
+            display: none; /* Initially hidden */
             align-items: center;
-            background-color: #ff7a21;
+            background-color: #ff6a00; /* Orange color */
             color: white;
             border: none;
             border-radius: 20px;
@@ -291,6 +291,9 @@
             cursor: pointer;
             transition: background-color 0.3s ease;
             margin-top: 20px;
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%); /* Center the button horizontally */
         }
 
         .fullscreen-btn:hover {
@@ -311,7 +314,6 @@
         iframe {
             border: none;
         }
-        
     </style>
  <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-6BPGNZNTLZ"></script>
@@ -697,13 +699,18 @@
     <script src="../assets/js/custom-isotop.js"></script>
     <!--Main js-->
     <script src="../assets/js/main.js"></script>
-    <script>
-                 function loadMainGame()
-                 {
-                     var html = `<iframe class="game-iframe iframeloader" id="game-area" src="https://boxing2.github.io/b88/pac-man/" width="480" height="800" scrolling="none" frameborder="0" allowfullscreen="" tabindex="0"></iframe>`;
-                     document.getElementById("loadgame").innerHTML = html;
-                     document.getElementById('loadgame').scrollIntoView();
-                 }
+     <script>
+        function loadMainGame() {
+            // Load the game iframe
+            var html = `<iframe class="game-iframe iframeloader" id="game-area" src="https://boxing2.github.io/b88/pac-man/" width="480" height="800" scrolling="none" frameborder="0" allowfullscreen="" tabindex="0"></iframe>`;
+            document.getElementById("loadgame").innerHTML = html;
+            
+            // Show the fullscreen button after loading the game
+            document.getElementById("fullscreenButton").style.display = "inline-flex";
+            
+            // Scroll the game into view
+            document.getElementById('loadgame').scrollIntoView();
+        }
                  function open_fullscreen() {
                      let game = document.getElementById("game-area");
                      if (game.requestFullscreen) {
