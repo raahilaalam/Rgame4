@@ -658,6 +658,29 @@
     <!--Main js-->
     <script src="../assets/js/main.js"></script>
     <script>
+
+	    <div class="game-container">
+        <iframe src="https://www.google.com/logos/2010/pacman10-i.html" id="pacmanGame" width="800" height="600"></iframe>
+        <button onclick="openFullscreen('pacmanGame')">Go Fullscreen</button>
+    </div>
+
+    <!-- JavaScript for Fullscreen -->
+    <script>
+    function openFullscreen(elementId) {
+        var elem = document.getElementById(elementId);
+        
+        if (elem.requestFullscreen) {
+            elem.requestFullscreen();
+        } else if (elem.mozRequestFullScreen) { // Firefox
+            elem.mozRequestFullScreen();
+        } else if (elem.webkitRequestFullscreen) { // Chrome, Safari and Opera
+            elem.webkitRequestFullscreen();
+        } else if (elem.msRequestFullscreen) { // IE/Edge
+            elem.msRequestFullscreen();
+        }
+    }
+    </script>
+
                  function loadMainGame()
                  {
                      var html = `<iframe class="game-iframe iframeloader" id="game-area" src="https://boxing2.github.io/b88/pac-man/" width="480" height="800" scrolling="none" frameborder="0" allowfullscreen="" tabindex="0"></iframe>`;
