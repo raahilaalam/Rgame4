@@ -1,35 +1,3 @@
-// Function to open fullscreen
-function open_fullscreen() {
-    const element = document.documentElement; // Target the entire document for fullscreen
-
-    if (element.requestFullscreen) {
-        element.requestFullscreen();
-    } else if (element.mozRequestFullScreen) { // Firefox
-        element.mozRequestFullScreen();
-    } else if (element.webkitRequestFullscreen) { // Chrome, Safari, and Opera
-        element.webkitRequestFullscreen();
-    } else if (element.msRequestFullscreen) { // IE/Edge
-        element.msRequestFullscreen();
-    }
-}
-
-// Show the fullscreen button after loading the game
-function showFullscreenButton() {
-    document.getElementById("fullscreenButton").style.display = "inline-flex";
-}
-
-// Example of calling the function when the game is loaded (can be customized)
-window.onload = function() {
-    // Simulate game loading, you can replace this with your actual logic
-    showFullscreenButton();
-}
-
-// Adding event listener to the fullscreen button
-document.getElementById('fullscreenButton').addEventListener('click', open_fullscreen);
-
-
-
-
 
 // Create a <style> element
 var style = document.createElement('style');
