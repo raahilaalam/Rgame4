@@ -36,11 +36,53 @@ style.innerHTML = `
       opacity: 1;
     }
   }
+
+  /* Fullscreen button style */
+  .fullscreen-btn {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    padding: 10px 20px;
+    background-color: #ff7f50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 1001;
+  }
+
+  .fullscreen-btn i {
+    margin-right: 5px;
+  }
+
+  .fullscreen-btn:hover {
+    background-color: #ff4500;
+  }
 `;
 
 // Append the <style> element to the document head
 document.head.appendChild(style);
 
+// Fullscreen toggle function
+function open_fullscreen() {
+    if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+    } else {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        }
+    }
+}
+
+// Create fullscreen button and append it dynamically
+var fullscreenButton = document.createElement('button');
+fullscreenButton.id = 'fullscreenButton';
+fullscreenButton.className = 'fullscreen-btn';
+fullscreenButton.innerHTML = '<i class="fas fa-expand"></i> Fullscreen';
+fullscreenButton.onclick = open_fullscreen;
+
+// Append fullscreen button to body
+document.body.appendChild(fullscreenButton);
 
 $(window).on('load', function () {
     // Google Analytics code
