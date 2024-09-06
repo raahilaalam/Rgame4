@@ -285,6 +285,44 @@
       margin-bottom: 30px;
       margin-top: 20px
     }
+
+
+	          /* CSS for Fullscreen Button */
+        .fullscreen-btn {
+            display: none; /* Initially hidden */
+            align-items: center;
+            background-color: #ff6a00; /* Orange color */
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%); /* Center the button horizontally */
+        }
+
+        .fullscreen-btn:hover {
+            background-color: #ff7a21;
+        }
+
+        .fullscreen-btn i {
+            margin-right: 8px;
+        }
+
+        /* Styling for game iframe (optional) */
+        .game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        iframe {
+            border: none;
+        }
     
   </style>
 
@@ -429,7 +467,11 @@
        
        
       <!-- Related Games Start -->
-
+	   
+  <!-- Fullscreen Button (hidden initially) -->
+    <button id="fullscreenButton" class="fullscreen-btn" onclick="open_fullscreen()">
+        <i class="fas fa-expand"></i> Fullscreen
+    </button>
 
       <section class="fag-games-area related_games section_100">
          <div class="container">
@@ -1367,6 +1409,9 @@
             function loadMainGame(){
             var html = `<iframe class="game-iframe iframeloader" id="game-area" src="https://ubg77.github.io/game131022/drive-mad/" width="480" height="800" scrolling="none" frameborder="0" allowfullscreen="" tabindex="0"></iframe>`;
             document.getElementById("loadgame").innerHTML = html;
+		     // Show the fullscreen button after loading the game
+            document.getElementById("fullscreenButton").style.display = "inline-flex";
+		    
             document.getElementById('loadgame').scrollIntoView();
             }
             function open_fullscreen() {
