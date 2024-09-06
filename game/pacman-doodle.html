@@ -659,27 +659,6 @@
     <script src="../assets/js/main.js"></script>
     <script>
 
-	    <div class="game-container">
-        <iframe src="https://www.google.com/logos/2010/pacman10-i.html" id="pacmanGame" width="800" height="600"></iframe>
-        <button onclick="openFullscreen('pacmanGame')">Go Fullscreen</button>
-    </div>
-
-    <!-- JavaScript for Fullscreen -->
-    <script>
-    function openFullscreen(elementId) {
-        var elem = document.getElementById(elementId);
-        
-        if (elem.requestFullscreen) {
-            elem.requestFullscreen();
-        } else if (elem.mozRequestFullScreen) { // Firefox
-            elem.mozRequestFullScreen();
-        } else if (elem.webkitRequestFullscreen) { // Chrome, Safari and Opera
-            elem.webkitRequestFullscreen();
-        } else if (elem.msRequestFullscreen) { // IE/Edge
-            elem.msRequestFullscreen();
-        }
-    }
-    </script>
 
                  function loadMainGame()
                  {
@@ -687,18 +666,21 @@
                      document.getElementById("loadgame").innerHTML = html;
                      document.getElementById('loadgame').scrollIntoView();
                  }
-                 function open_fullscreen() {
-                     let game = document.getElementById("game-area");
-                     if (game.requestFullscreen) {
-                     game.requestFullscreen();
-                     } else if (game.mozRequestFullScreen) { /* Firefox */
-                     game.mozRequestFullScreen();
-                     } else if (game.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
-                     game.webkitRequestFullscreen();
-                     } else if (game.msRequestFullscreen) { /* IE/Edge */
-                      game.msRequestFullscreen();
-                     }
-                     };
+ 		 <!-- JavaScript for Fullscreen -->
+    			<script>
+    		function openFullscreen(elementId) {
+        	var elem = document.getElementById(elementId);
+        
+       		if (elem.requestFullscreen) {
+            	elem.requestFullscreen();
+        	} else if (elem.mozRequestFullScreen) { // Firefox
+            	elem.mozRequestFullScreen();
+        	} else if (elem.webkitRequestFullscreen) { // Chrome, Safari and Opera
+            	elem.webkitRequestFullscreen();
+        	} else if (elem.msRequestFullscreen) { // IE/Edge
+            	elem.msRequestFullscreen();
+        }
+    }
     </script>
     </body>
 </html>
