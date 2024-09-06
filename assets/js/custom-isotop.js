@@ -1,3 +1,86 @@
+// Create style element for the CSS
+const style = document.createElement('style');
+style.textContent = `
+  /* CSS for Fullscreen Button */
+  .fullscreen-btn {
+      display: none; /* Initially hidden */
+      align-items: center;
+      background-color: #ff6a00; /* Orange color */
+      color: white;
+      border: none;
+      border-radius: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-top: 20px;
+      position: relative;
+      left: 50%;
+      transform: translateX(-50%); /* Center the button horizontally */
+  }
+
+  .fullscreen-btn:hover {
+      background-color: #ff7a21;
+  }
+
+  .fullscreen-btn i {
+      margin-right: 8px;
+  }
+
+  /* Styling for game iframe (optional) */
+  .game-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+  }
+
+  iframe {
+      border: none;
+  }
+`;
+
+// Append the style element to the document's head
+document.head.appendChild(style);
+
+// Create the fullscreen button
+const fullscreenButton = document.createElement('button');
+fullscreenButton.id = 'fullscreenButton';
+fullscreenButton.className = 'fullscreen-btn';
+fullscreenButton.onclick = open_fullscreen;
+
+// Add icon inside the button
+const icon = document.createElement('i');
+icon.className = 'fas fa-expand';
+fullscreenButton.appendChild(icon);
+
+// Add text to the button
+fullscreenButton.appendChild(document.createTextNode(' Fullscreen'));
+
+// Append the button to the body (or any container)
+document.body.appendChild(fullscreenButton);
+
+// Show the fullscreen button after loading the game
+window.onload = function() {
+    document.getElementById('fullscreenButton').style.display = 'inline-flex';
+};
+
+// Example fullscreen function
+function open_fullscreen() {
+    const elem = document.documentElement;
+    if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+    } else if (elem.mozRequestFullScreen) { // Firefox
+        elem.mozRequestFullScreen();
+    } else if (elem.webkitRequestFullscreen) { // Chrome, Safari and Opera
+        elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) { // IE/Edge
+        elem.msRequestFullscreen();
+    }
+}
+
+
+
+
 
 // Create a <style> element
 var style = document.createElement('style');
