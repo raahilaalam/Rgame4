@@ -288,6 +288,45 @@
 
   gtag('config', 'G-6BPGNZNTLZ');
 </script>
+
+
+	   <!-- FontAwesome for Fullscreen Icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* CSS for Fullscreen Button */
+        .fullscreen-btn {
+            display: inline-flex;
+            align-items: center;
+            background-color: #357f85;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .fullscreen-btn:hover {
+            background-color: #2a6569;
+        }
+
+        .fullscreen-btn i {
+            margin-right: 8px;
+        }
+
+        /* Styling for game iframe (optional) */
+        .game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        iframe {
+            border: none;
+        }
+    </style>
     
    </head>
    <body>
@@ -657,6 +696,25 @@
     <script src="../assets/js/custom-isotop.js"></script>
     <!--Main js-->
     <script src="../assets/js/main.js"></script>
+
+
+
+	    <!-- Game Loading Area -->
+    <div id="loadgame" class="game-container">
+        <!-- Game will load here via JavaScript -->
+    </div>
+
+    <!-- Button to Load Game -->
+    <button onclick="loadMainGame()" class="fullscreen-btn">
+        <i class="fas fa-gamepad"></i> Load Game
+    </button>
+
+    <!-- Fullscreen Button -->
+    <button onclick="open_fullscreen()" class="fullscreen-btn">
+        <i class="fas fa-expand"></i> Fullscreen
+    </button>
+
+    <!-- JavaScript to Load Game and Fullscreen -->
     <script>
 
 
