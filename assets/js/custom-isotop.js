@@ -1,3 +1,77 @@
+  /* Fullscreen button style */
+  .fullscreen-btn {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    padding: 10px 20px;
+    background-color: #ff7f50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 1001;
+  }
+
+  .fullscreen-btn i {
+    margin-right: 5px;
+  }
+
+  .fullscreen-btn:hover {
+    background-color: #ff4500;
+  }
+`;
+
+// Append the <style> element to the document head
+document.head.appendChild(style);
+
+// Fullscreen toggle function for a specific element
+function toggleFullscreen(element) {
+    if (!document.fullscreenElement) {
+        if (element.requestFullscreen) {
+            element.requestFullscreen();
+        } else if (element.mozRequestFullScreen) { // Firefox
+            element.mozRequestFullScreen();
+        } else if (element.webkitRequestFullscreen) { // Chrome, Safari, Opera
+            element.webkitRequestFullscreen();
+        } else if (element.msRequestFullscreen) { // IE/Edge
+            element.msRequestFullscreen();
+        }
+    } else {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        }
+    }
+}
+
+// Check if there are games on the page
+var games = document.querySelectorAll('.gameContainer'); // Use your actual game container class
+
+if (games.length > 0) {
+    // Create fullscreen button and append it dynamically
+    var fullscreenButton = document.createElement('button');
+    fullscreenButton.id = 'fullscreenButton';
+    fullscreenButton.className = 'fullscreen-btn';
+    fullscreenButton.innerHTML = '<i class="fas fa-expand"></i> Fullscreen';
+    
+    // Attach fullscreen toggle for the first game container
+    fullscreenButton.onclick = function () {
+        var gameContainer = document.querySelector('.gameContainer'); // Adjust to your game's container class
+        toggleFullscreen(gameContainer);
+    };
+
+    // Append fullscreen button to body
+    document.body.appendChild(fullscreenButton);
+}
+
+$(window).on('load', function () {
+    // Your additional logic for Google Analytics, PWA install prompt, Isotope, etc.
+    // Remains unchanged...
+});
+
+
+
+
+
 // Create a <style> element
 var style = document.createElement('style');
 style.type = 'text/css';
@@ -36,53 +110,11 @@ style.innerHTML = `
       opacity: 1;
     }
   }
-
-  /* Fullscreen button style */
-  .fullscreen-btn {
-    position: fixed;
-    bottom: 10px;
-    right: 10px;
-    padding: 10px 20px;
-    background-color: #ff7f50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    z-index: 1001;
-  }
-
-  .fullscreen-btn i {
-    margin-right: 5px;
-  }
-
-  .fullscreen-btn:hover {
-    background-color: #ff4500;
-  }
 `;
 
 // Append the <style> element to the document head
 document.head.appendChild(style);
 
-// Fullscreen toggle function
-function open_fullscreen() {
-    if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen();
-    } else {
-        if (document.exitFullscreen) {
-            document.exitFullscreen();
-        }
-    }
-}
-
-// Create fullscreen button and append it dynamically
-var fullscreenButton = document.createElement('button');
-fullscreenButton.id = 'fullscreenButton';
-fullscreenButton.className = 'fullscreen-btn';
-fullscreenButton.innerHTML = '<i class="fas fa-expand"></i> Fullscreen';
-fullscreenButton.onclick = open_fullscreen;
-
-// Append fullscreen button to body
-document.body.appendChild(fullscreenButton);
 
 $(window).on('load', function () {
     // Google Analytics code
