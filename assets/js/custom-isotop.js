@@ -1,3 +1,59 @@
+// Wait until the window has loaded
+window.onload = function() {
+    // Create the fullscreen button dynamically
+    const fullScreenButton = document.createElement('button');
+    fullScreenButton.id = 'fullscreenButton';
+    fullScreenButton.innerHTML = '<i class="fas fa-expand"></i> Fullscreen';
+
+    // Add inline styles to mimic the CSS you provided
+    fullScreenButton.style.display = 'inline-flex'; // Show button after loading
+    fullScreenButton.style.alignItems = 'center';
+    fullScreenButton.style.backgroundColor = '#ff6a00';
+    fullScreenButton.style.color = 'white';
+    fullScreenButton.style.border = 'none';
+    fullScreenButton.style.borderRadius = '20px';
+    fullScreenButton.style.padding = '10px 20px';
+    fullScreenButton.style.fontSize = '16px';
+    fullScreenButton.style.cursor = 'pointer';
+    fullScreenButton.style.transition = 'background-color 0.3s ease';
+    fullScreenButton.style.marginTop = '20px';
+    fullScreenButton.style.position = 'relative';
+    fullScreenButton.style.left = '50%';
+    fullScreenButton.style.transform = 'translateX(-50%)'; // Center horizontally
+
+    // Add hover effect using JavaScript
+    fullScreenButton.onmouseover = function() {
+        fullScreenButton.style.backgroundColor = '#ff7a21';
+    };
+    fullScreenButton.onmouseout = function() {
+        fullScreenButton.style.backgroundColor = '#ff6a00';
+    };
+
+    // Append the button to the body (or you can add it to a specific container)
+    document.body.appendChild(fullScreenButton);
+
+    // Fullscreen toggle function
+    function open_fullscreen() {
+        const gameContainer = document.documentElement; // Make the whole document fullscreen
+
+        if (!document.fullscreenElement) {
+            gameContainer.requestFullscreen()
+                .catch(err => {
+                    alert(`Error attempting to enable fullscreen mode: ${err.message}`);
+                });
+        } else {
+            document.exitFullscreen();
+        }
+    }
+
+    // Add event listener for the button to trigger fullscreen
+    fullScreenButton.addEventListener('click', open_fullscreen);
+};
+
+
+
+
+
 
 // Create a <style> element
 var style = document.createElement('style');
