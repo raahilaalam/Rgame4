@@ -1,3 +1,5 @@
+
+
 // Create a <style> element
 var style = document.createElement('style');
 style.type = 'text/css';
@@ -36,40 +38,11 @@ style.innerHTML = `
       opacity: 1;
     }
   }
-
-    .fullscreen-btn {
-        display: none; /* Initially hidden */
-        align-items: center;
-        background-color: #ff6a00;
-        color: white;
-        border: none;
-        border-radius: 20px;
-        padding: 10px 20px;
-        font-size: 16px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-        margin-top: 20px;
-        position: relative;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-
-    .fullscreen-btn:hover {
-        background-color: #ff7a21;
-    }
-
-    .fullscreen-btn i {
-        margin-right: 8px;
-    }
-
-    /* Adjust the position for the "Related games" section */
-    #fullscreenButton {
-        margin-bottom: 20px; /* Adjust as necessary */
-    }
 `;
 
 // Append the <style> element to the document head
 document.head.appendChild(style);
+
 
 $(window).on('load', function () {
     // Google Analytics code
@@ -201,34 +174,4 @@ $(window).on('load', function () {
             });
         });
     }
-
-  // Create fullscreen button
-var fullscreenButton = document.createElement('button');
-fullscreenButton.id = 'fullscreenButton';
-fullscreenButton.className = 'fullscreen-btn';
-fullscreenButton.innerHTML = '<i class="fas fa-expand"></i> Fullscreen';
-fullscreenButton.onclick = openFullscreen;
-
-// Append the button to the DOM, just above "Related games" section
-var relatedGamesSection = document.querySelector('.related-games');  // Adjust this selector based on your HTML structure
-relatedGamesSection.parentNode.insertBefore(fullscreenButton, relatedGamesSection);
-
-// Function to request fullscreen for the iframe only
-function openFullscreen() {
-    var gameIframe = document.querySelector('iframe');  // Select the game iframe
-
-    if (gameIframe.requestFullscreen) {
-        gameIframe.requestFullscreen();
-    } else if (gameIframe.mozRequestFullScreen) {  // For Firefox
-        gameIframe.mozRequestFullScreen();
-    } else if (gameIframe.webkitRequestFullscreen) {  // For Chrome, Safari and Opera
-        gameIframe.webkitRequestFullscreen();
-    } else if (gameIframe.msRequestFullscreen) {  // For IE/Edge
-        gameIframe.msRequestFullscreen();
-    }
-}
-
-// Show the fullscreen button once the game loads
-window.addEventListener('load', function () {
-    document.getElementById('fullscreenButton').style.display = 'inline-flex';
 });
