@@ -49,6 +49,8 @@ style.innerHTML = `
     margin-top: 20px;
     display: flex;
     align-items: center;
+    transform: translateX(430%);
+    position: relative;
   }
   .fullscreen-btn i {
     margin-right: 10px;
