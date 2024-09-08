@@ -37,8 +37,8 @@ style.innerHTML = `
     }
   }
 
-  /* Fullscreen button style */
-  .fullscreen-btn {
+/* Fullscreen button style */
+.fullscreen-btn {
     padding: 12px 28px;
     font-size: 18px;
     cursor: pointer;
@@ -49,9 +49,16 @@ style.innerHTML = `
     margin-top: 20px;
     display: flex;
     align-items: center;
-    transform: translateX(430%);
-    position: relative;
-  }
+    justify-content: center;
+}
+
+/* Parent container for centering */
+.fullscreen-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height */
+}
   .fullscreen-btn i {
     margin-right: 10px;
     font-size: 20px;
