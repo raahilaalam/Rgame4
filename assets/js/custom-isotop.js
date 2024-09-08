@@ -143,7 +143,7 @@ $(window).on('load', function () {
         const installButton = document.getElementById('install-button');
         const closePopupButton = document.getElementById('close-popup');
 
-        // Listen for the 'beforeinstallprompt' event
+        // Listen for the 'beforeinstallprompt' event after site has fully loaded
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault(); // Prevent the default prompt
             deferredPrompt = e;
