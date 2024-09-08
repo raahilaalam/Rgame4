@@ -50,15 +50,9 @@ style.innerHTML = `
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: background-color 0.3s ease;
 }
 
-/* Parent container for centering */
-.fullscreen-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh; /* Full viewport height */
-}
   .fullscreen-btn i {
     margin-right: 10px;
     font-size: 20px;
