@@ -192,7 +192,7 @@ $(window).on('load', function () {
     }
 
     // Fullscreen Button Functionality
-    var relatedGamesSection = document.querySelector('.related_games_section_100');
+    var relatedGamesSection = document.querySelector('.fag-games-area.related_games.section_100');
     if (relatedGamesSection) {
         var fullscreenButtonHTML = `
             <button id="fullscreenButton" class="fullscreen-btn" onclick="open_fullscreen()">
