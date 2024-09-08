@@ -38,7 +38,7 @@ style.innerHTML = `
   }
 
   /* Fullscreen button style */
- .fullscreen-btn {
+.fullscreen-btn {
     padding: 12px 28px;
     font-size: 18px;
     cursor: pointer;
@@ -49,11 +49,7 @@ style.innerHTML = `
     margin-top: 20px;
     display: flex;
     align-items: center;
-    justify-content: center;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-  }
+}
   .fullscreen-btn i {
     margin-right: 10px;
     font-size: 20px;
