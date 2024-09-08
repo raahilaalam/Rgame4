@@ -1,5 +1,3 @@
-
-
 // Create a <style> element
 var style = document.createElement('style');
 style.type = 'text/css';
@@ -38,11 +36,28 @@ style.innerHTML = `
       opacity: 1;
     }
   }
+
+  /* Fullscreen button style */
+  .fullscreen-btn {
+    padding: 12px 28px;
+    font-size: 18px;
+    cursor: pointer;
+    background: #ff7f50;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+  }
+  .fullscreen-btn i {
+    margin-right: 10px;
+    font-size: 20px;
+  }
 `;
 
 // Append the <style> element to the document head
 document.head.appendChild(style);
-
 
 $(window).on('load', function () {
     // Google Analytics code
@@ -61,6 +76,7 @@ $(window).on('load', function () {
     manifestLink.href = 'https://faf-games.github.io/manifest.json';
     document.head.appendChild(manifestLink);
 
+    // Initialize Isotope for games filtering
     var $container = $('.gamesContainer');
     $container.isotope({
         filter: '*',
@@ -173,5 +189,29 @@ $(window).on('load', function () {
                 'event_label': 'PWA Installed'
             });
         });
+    }
+
+    // Fullscreen Button Functionality
+    var relatedGamesSection = document.querySelector('.related_games_section_100');
+    if (relatedGamesSection) {
+        var fullscreenButtonHTML = `
+            <button id="fullscreenButton" class="fullscreen-btn" onclick="open_fullscreen()">
+                <i class="fas fa-expand"></i> Fullscreen
+            </button>
+        `;
+        relatedGamesSection.insertAdjacentHTML('beforebegin', fullscreenButtonHTML);
+    }
+
+    function open_fullscreen() {
+        var iframe = document.querySelector('iframe'); // Update selector if necessary
+        if (iframe.requestFullscreen) {
+            iframe.requestFullscreen();
+        } else if (iframe.mozRequestFullScreen) { // Firefox
+            iframe.mozRequestFullScreen();
+        } else if (iframe.webkitRequestFullscreen) { // Chrome, Safari, Opera
+            iframe.webkitRequestFullscreen();
+        } else if (iframe.msRequestFullscreen) { // IE/Edge
+            iframe.msRequestFullscreen();
+        }
     }
 });
