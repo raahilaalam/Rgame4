@@ -38,18 +38,22 @@ style.innerHTML = `
   }
 
   /* Fullscreen button style */
-.fullscreen-btn {
-    padding: 12px 28px;
-    font-size: 18px;
-    cursor: pointer;
-    background: #ff7f50;
-    color: white;
-    border: none;
-    border-radius: 30px;
-    margin-top: 20px;
-    display: flex;
-    align-items: center;
-}
+        .fullscreen-btn {
+            display: none; /* Initially hidden */
+            align-items: center;
+            background-color: #ff6a00; /* Orange color */
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%); /* Center the button horizontally */
+        }
   .fullscreen-btn i {
     margin-right: 10px;
     font-size: 20px;
