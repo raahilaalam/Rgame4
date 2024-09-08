@@ -46,7 +46,9 @@ style.innerHTML = `
       color: white;
       border: none;
       border-radius: 30px;
-      z-index: 1; /* Ensure it's on top if there are other layers */
+      position: relative;
+    left: 50%;
+    transform: translateX(-50%);
   }
 
   /* Parent container for centering */
