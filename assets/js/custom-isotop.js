@@ -37,25 +37,30 @@ style.innerHTML = `
     }
   }
 
-/* Fullscreen button style */
-.fullscreen-btn {
-    padding: 12px 28px;
-    font-size: 18px;
-    cursor: pointer;
-    background: #ff7f50;
-    color: white;
-    border: none;
-    border-radius: 30px;
-    margin-top: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background-color 0.3s ease;
-}
+  /* Fullscreen button style */
+  .fullscreen-btn {
+      padding: 12px 28px;
+      font-size: 18px;
+      cursor: pointer;
+      background: #ff7f50;
+      color: white;
+      border: none;
+      border-radius: 30px;
+      z-index: 1; /* Ensure it's on top if there are other layers */
+  }
 
-  .fullscreen-btn i {
-    margin-right: 10px;
-    font-size: 20px;
+  /* Parent container for centering */
+  .fullscreen-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: rgba(0, 0, 0, 0); /* Transparent background */
+      z-index: 0; /* Below other content */
   }
 `;
 
