@@ -36,34 +36,6 @@ style.innerHTML = `
       opacity: 1;
     }
   }
-
-  /* Fullscreen button style */
-  .fullscreen-btn {
-      padding: 12px 28px;
-      font-size: 18px;
-      cursor: pointer;
-      background: #ff7f50;
-      color: white;
-      border: none;
-      border-radius: 30px;
-      position: relative;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-
-  /* Parent container for centering */
-  .fullscreen-container {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background-color: rgba(0, 0, 0, 0); /* Transparent background */
-      z-index: 0; /* Below other content */
-  }
 `;
 
 // Append the <style> element to the document head
@@ -199,29 +171,5 @@ $(window).on('load', function () {
                 'event_label': 'PWA Installed'
             });
         });
-    }
-
-    // Fullscreen Button Functionality
-    var relatedGamesSection = document.querySelector('.fag-games-area.related_games.section_100');
-    if (relatedGamesSection) {
-        var fullscreenButtonHTML = `
-            <button id="fullscreenButton" class="fullscreen-btn" onclick="open_fullscreen()">
-                <i class="fas fa-expand"></i> Fullscreen
-            </button>
-        `;
-        relatedGamesSection.insertAdjacentHTML('beforebegin', fullscreenButtonHTML);
-    }
-
-    function open_fullscreen() {
-        var iframe = document.querySelector('iframe'); // Update selector if necessary
-        if (iframe.requestFullscreen) {
-            iframe.requestFullscreen();
-        } else if (iframe.mozRequestFullScreen) { // Firefox
-            iframe.mozRequestFullScreen();
-        } else if (iframe.webkitRequestFullscreen) { // Chrome, Safari, Opera
-            iframe.webkitRequestFullscreen();
-        } else if (iframe.msRequestFullscreen) { // IE/Edge
-            iframe.msRequestFullscreen();
-        }
     }
 });
