@@ -244,7 +244,7 @@ a {
     transition: all 0.4s ease 0s;
     color: white;
     text-decoration: none;
- 
+     text-wrap: nowrap;
 }
 
 a:focus {
