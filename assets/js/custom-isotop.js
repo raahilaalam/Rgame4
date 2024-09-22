@@ -62,7 +62,7 @@ $(window).on('load', function () {
         // Handle the install button click with faster countdown logic
         installButton.addEventListener('click', () => {
             if (deferredPrompt) {
-                let countdown = 3; // Set countdown to 3 seconds
+                let countdown = 3; // Set countdown to 5 seconds
                 installButton.innerHTML = `Installing in ${countdown}s...`;
 
                 const countdownInterval = setInterval(() => {
