@@ -1,11 +1,11 @@
-$(window).on('load', function () {
+$(document).ready(function () {
     // Dynamically add the manifest link
     const manifestLink = document.createElement('link');
     manifestLink.rel = 'manifest';
     manifestLink.href = 'https://faf-games.github.io/manifest.json';
     document.head.appendChild(manifestLink);
 
-    // Google Analytics Tracking
+    // Google Analytics Tracking with error handling
     const googleAnalyticsScript = document.createElement('script');
     googleAnalyticsScript.async = true;
     googleAnalyticsScript.src = "https://www.googletagmanager.com/gtag/js?id=G-6BPGNZNTLZ";
@@ -18,14 +18,36 @@ $(window).on('load', function () {
         gtag('config', 'G-6BPGNZNTLZ');
     };
 
+    googleAnalyticsScript.onerror = function () {
+        console.error("Google Analytics script failed to load.");
+    };
+
+    // Function to detect if it's a mobile device
+    function isMobileDevice() {
+        return window.matchMedia("(max-width: 767px)").matches || /Mobi|Android/i.test(navigator.userAgent);
+    }
+
+    // Function to handle Google Analytics events
+    function trackEvent(eventName, category, label) {
+        try {
+            gtag('event', eventName, {
+                'event_category': category,
+                'event_label': label
+            });
+        } catch (e) {
+            console.error('Google Analytics tracking failed', e);
+        }
+    }
+
     // PWA Installation Code
     let deferredPrompt;
     const isPwaInstalled = localStorage.getItem('pwaInstalled');
 
-    if (!isPwaInstalled && !isMobileDevice()) {
+    // Check if service workers and beforeinstallprompt are supported
+    if (!isPwaInstalled && !isMobileDevice() && 'serviceWorker' in navigator && 'BeforeInstallPromptEvent' in window) {
         // Create and append the popup HTML (desktop only)
         const popupHTML = `
-            <div id="pwa-popup" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.8); color: #333; text-align: center; z-index: 1000; display: flex; align-items: center; justify-content: center;">
+            <div id="pwa-popup" class="popup-hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.8); color: #333; text-align: center; z-index: 1000; display: flex; align-items: center; justify-content: center;">
                 <div style="padding: 25px; background: #f5f5f5; border-radius: 20px; width: 90%; max-width: 450px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); text-align: center;">
                     <h2 style="font-size: 22px; margin-bottom: 15px; color: #2c3e50; animation: fadeInDown 1s;">Hey there! 👋</h2>
                     <p style="font-size: 16px; color: #444; margin-bottom: 25px; font-weight: bold; color: #ff7f50; animation: pulseText 2s infinite;">
@@ -50,19 +72,15 @@ $(window).on('load', function () {
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault(); // Prevent the default prompt
             deferredPrompt = e;
-            popup.style.display = 'flex'; // Show the popup
-
-            // Track that the install prompt was shown
-            gtag('event', 'PWA Install Prompt', {
-                'event_category': 'PWA',
-                'event_label': 'Install Prompt Shown'
-            });
+            popup.classList.remove('popup-hidden'); // Show the popup
+            trackEvent('PWA Install Prompt', 'PWA', 'Install Prompt Shown');
         });
 
-        // Handle the install button click with faster countdown logic
+        // Handle the install button click with countdown logic
         installButton.addEventListener('click', () => {
             if (deferredPrompt) {
-                let countdown = 3; // Set countdown to 5 seconds
+                let countdown = 3; // Set countdown to 3 seconds
+                installButton.disabled = true; // Disable the button to prevent multiple clicks
                 installButton.innerHTML = `Installing in ${countdown}s...`;
 
                 const countdownInterval = setInterval(() => {
@@ -73,47 +91,36 @@ $(window).on('load', function () {
                         clearInterval(countdownInterval);
                         installButton.innerHTML = 'Installing...'; // Show installing status
 
-                        deferredPrompt.prompt(); // Show the install prompt immediately
+                        deferredPrompt.prompt(); // Show the install prompt
 
                         deferredPrompt.userChoice.then((choiceResult) => {
                             if (choiceResult.outcome === 'accepted') {
                                 console.log('User accepted the A2HS prompt');
-                                gtag('event', 'PWA Install Accepted', {
-                                    'event_category': 'PWA',
-                                    'event_label': 'Install Accepted'
-                                });
+                                trackEvent('PWA Install Accepted', 'PWA', 'Install Accepted');
                             } else {
                                 console.log('User dismissed the A2HS prompt');
-                                gtag('event', 'PWA Install Dismissed', {
-                                    'event_category': 'PWA',
-                                    'event_label': 'Install Dismissed'
-                                });
+                                trackEvent('PWA Install Dismissed', 'PWA', 'Install Dismissed');
                             }
                             deferredPrompt = null;
-                            popup.style.display = 'none'; // Hide the popup
+                            popup.classList.add('popup-hidden'); // Hide the popup
                         });
                     }
-                }, 1000); // Update every second (1 second countdown)
+                }, 1000); // Update every second
             }
         });
 
         // Handle the close popup button click
         closePopupButton.addEventListener('click', () => {
-            popup.style.display = 'none';
-            gtag('event', 'PWA Popup Closed', {
-                'event_category': 'PWA',
-                'event_label': 'Popup Closed'
-            });
+            popup.classList.add('popup-hidden'); // Hide the popup
+            trackEvent('PWA Popup Closed', 'PWA', 'Popup Closed');
         });
 
+        // Hide popup when app is installed
         window.addEventListener('appinstalled', () => {
             console.log('PWA was installed');
             localStorage.setItem('pwaInstalled', 'true'); // Save the flag in localStorage
-            popup.style.display = 'none'; // Hide the popup
-            gtag('event', 'PWA Installed', {
-                'event_category': 'PWA',
-                'event_label': 'PWA Installed'
-            });
+            popup.classList.add('popup-hidden'); // Hide the popup
+            trackEvent('PWA Installed', 'PWA', 'PWA Installed');
         });
     }
 });
