@@ -1,53 +1,3 @@
-// Create a <style> element
-var style = document.createElement('style');
-style.type = 'text/css';
-
-// Add combined CSS rules and animations with optimized performance
-style.innerHTML = `
-  #install-button:hover {
-    background: linear-gradient(135deg, #ff4500, #ff7f50);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-    transform: scale(1.05);
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
-
-  #close-popup:hover {
-    color: #555;
-    transition: color 0.2s;
-  }
-
-  @keyframes fadeInDown {
-    from {
-      opacity: 0;
-      transform: translateY(-20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @keyframes pulseText {
-    0% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.5;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
-`;
-
-// Append the <style> element to the document head
-document.head.appendChild(style);
-
-// Function to detect if it's a mobile device
-function isMobileDevice() {
-    return window.matchMedia("(max-width: 767px)").matches || /Mobi|Android/i.test(navigator.userAgent);
-}
-
 $(window).on('load', function () {
     // Dynamically add the manifest link
     const manifestLink = document.createElement('link');
@@ -109,7 +59,7 @@ $(window).on('load', function () {
             });
         });
 
-        // Handle the install button click with countdown logic
+        // Handle the install button click with faster countdown logic
         installButton.addEventListener('click', () => {
             if (deferredPrompt) {
                 let countdown = 3; // Set countdown to 3 seconds
@@ -121,7 +71,9 @@ $(window).on('load', function () {
 
                     if (countdown === 0) {
                         clearInterval(countdownInterval);
-                        deferredPrompt.prompt(); // Show the install prompt
+                        installButton.innerHTML = 'Installing...'; // Show installing status
+
+                        deferredPrompt.prompt(); // Show the install prompt immediately
 
                         deferredPrompt.userChoice.then((choiceResult) => {
                             if (choiceResult.outcome === 'accepted') {
@@ -141,7 +93,7 @@ $(window).on('load', function () {
                             popup.style.display = 'none'; // Hide the popup
                         });
                     }
-                }, 1000); // Update every second
+                }, 1000); // Update every second (1 second countdown)
             }
         });
 
