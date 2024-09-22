@@ -55,6 +55,19 @@ $(window).on('load', function () {
     manifestLink.href = 'https://faf-games.github.io/manifest.json';
     document.head.appendChild(manifestLink);
 
+    // Google Analytics Tracking
+    const googleAnalyticsScript = document.createElement('script');
+    googleAnalyticsScript.async = true;
+    googleAnalyticsScript.src = "https://www.googletagmanager.com/gtag/js?id=G-6BPGNZNTLZ";
+    document.head.appendChild(googleAnalyticsScript);
+
+    googleAnalyticsScript.onload = function () {
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-6BPGNZNTLZ');
+    };
+
     // PWA Installation Code
     let deferredPrompt;
     const isPwaInstalled = localStorage.getItem('pwaInstalled');
@@ -96,42 +109,45 @@ $(window).on('load', function () {
             });
         });
 
-        // Handle the install button click
+        // Handle the install button click with countdown logic
         installButton.addEventListener('click', () => {
             if (deferredPrompt) {
-                deferredPrompt.prompt(); // Show the install prompt
+                let countdown = 3; // Set countdown to 3 seconds
+                installButton.innerHTML = `Installing in ${countdown}s...`;
 
-                deferredPrompt.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === 'accepted') {
-                        console.log('User accepted the A2HS prompt');
-                        gtag('event', 'PWA Install Accepted', {
-                            'event_category': 'PWA',
-                            'event_label': 'Install Accepted'
-                        });
-                    } else {
-                        console.log('User dismissed the A2HS prompt');
-                        gtag('event', 'PWA Install Dismissed', {
-                            'event_category': 'PWA',
-                            'event_label': 'Install Dismissed'
+                const countdownInterval = setInterval(() => {
+                    countdown--;
+                    installButton.innerHTML = `Installing in ${countdown}s...`;
+
+                    if (countdown === 0) {
+                        clearInterval(countdownInterval);
+                        deferredPrompt.prompt(); // Show the install prompt
+
+                        deferredPrompt.userChoice.then((choiceResult) => {
+                            if (choiceResult.outcome === 'accepted') {
+                                console.log('User accepted the A2HS prompt');
+                                gtag('event', 'PWA Install Accepted', {
+                                    'event_category': 'PWA',
+                                    'event_label': 'Install Accepted'
+                                });
+                            } else {
+                                console.log('User dismissed the A2HS prompt');
+                                gtag('event', 'PWA Install Dismissed', {
+                                    'event_category': 'PWA',
+                                    'event_label': 'Install Dismissed'
+                                });
+                            }
+                            deferredPrompt = null;
+                            popup.style.display = 'none'; // Hide the popup
                         });
                     }
-                    deferredPrompt = null;
-                    popup.style.display = 'none'; // Hide the popup
-                });
+                }, 1000); // Update every second
             }
         });
 
         // Handle the close popup button click
         closePopupButton.addEventListener('click', () => {
-            // Hide the popup immediately without lag
             popup.style.display = 'none';
-
-            // Set a timeout to ensure it's fully removed from the display stack
-            setTimeout(() => {
-                popup.style.display = 'none';
-            }, 10); // small delay to ensure DOM update
-
-            // Log and track the close event
             gtag('event', 'PWA Popup Closed', {
                 'event_category': 'PWA',
                 'event_label': 'Popup Closed'
