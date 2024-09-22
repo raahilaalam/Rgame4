@@ -98,9 +98,6 @@ $(window).on('load', function () {
 
         // Handle the install button click
         installButton.addEventListener('click', () => {
-            // Immediately hide the popup before prompting the user
-            popup.style.display = 'none';
-
             if (deferredPrompt) {
                 deferredPrompt.prompt(); // Show the install prompt
 
@@ -119,6 +116,7 @@ $(window).on('load', function () {
                         });
                     }
                     deferredPrompt = null;
+                    popup.style.display = 'none'; // Hide the popup
                 });
             }
         });
