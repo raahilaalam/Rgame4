@@ -43,7 +43,11 @@ style.innerHTML = `
 // Append the <style> element to the document head
 document.head.appendChild(style);
 
-// Load Google Analytics asynchronously via HTML script tags
+// Function to detect if it's a mobile device
+function isMobileDevice() {
+    return window.matchMedia("(max-width: 767px)").matches || /Mobi|Android/i.test(navigator.userAgent);
+}
+
 $(window).on('load', function () {
     // Dynamically add the manifest link
     const manifestLink = document.createElement('link');
@@ -55,8 +59,8 @@ $(window).on('load', function () {
     let deferredPrompt;
     const isPwaInstalled = localStorage.getItem('pwaInstalled');
 
-    if (!isPwaInstalled) {
-        // Create and append the popup HTML
+    if (!isPwaInstalled && !isMobileDevice()) {
+        // Create and append the popup HTML (desktop only)
         const popupHTML = `
             <div id="pwa-popup" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.8); color: #333; text-align: center; z-index: 1000; display: flex; align-items: center; justify-content: center;">
                 <div style="padding: 25px; background: #f5f5f5; border-radius: 20px; width: 90%; max-width: 450px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); text-align: center;">
