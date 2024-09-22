@@ -2,16 +2,18 @@
 var style = document.createElement('style');
 style.type = 'text/css';
 
-// Add combined CSS rules and animations
+// Add combined CSS rules and animations with optimized performance
 style.innerHTML = `
   #install-button:hover {
     background: linear-gradient(135deg, #ff4500, #ff7f50);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
     transform: scale(1.05);
+    transition: transform 0.2s, box-shadow 0.2s;
   }
 
   #close-popup:hover {
     color: #555;
+    transition: color 0.2s;
   }
 
   @keyframes fadeInDown {
@@ -41,54 +43,16 @@ style.innerHTML = `
 // Append the <style> element to the document head
 document.head.appendChild(style);
 
+// Load Google Analytics asynchronously via HTML script tags
 $(window).on('load', function () {
-    // Google Analytics code
-    (function() {
-        $.getScript('https://www.googletagmanager.com/gtag/js?id=G-6BPGNZNTLZ', function() {
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){ dataLayer.push(arguments); }
-            gtag('js', new Date());
-            gtag('config', 'G-6BPGNZNTLZ');
-        });
-    })();
-
     // Dynamically add the manifest link
     const manifestLink = document.createElement('link');
     manifestLink.rel = 'manifest';
     manifestLink.href = 'https://faf-games.github.io/manifest.json';
     document.head.appendChild(manifestLink);
 
-    // Initialize Isotope for games filtering
-    var $container = $('.gamesContainer');
-    $container.isotope({
-        filter: '*',
-        animationOptions: {
-            duration: 750,
-            easing: 'linear',
-            queue: false
-        }
-    });
-
-    $('.projectFilter a').on('click', function () {
-        $('.projectFilter .current').removeClass('current');
-        $(this).addClass('current');
-
-        var selector = $(this).attr('data-filter');
-        $container.isotope({
-            filter: selector,
-            animationOptions: {
-                duration: 750,
-                easing: 'linear',
-                queue: false
-            }
-        });
-        return false;
-    });
-
     // PWA Installation Code
     let deferredPrompt;
-
-    // Check if the PWA is already installed
     const isPwaInstalled = localStorage.getItem('pwaInstalled');
 
     if (!isPwaInstalled) {
@@ -136,14 +100,12 @@ $(window).on('load', function () {
                 deferredPrompt.userChoice.then((choiceResult) => {
                     if (choiceResult.outcome === 'accepted') {
                         console.log('User accepted the A2HS prompt');
-                        // Track acceptance
                         gtag('event', 'PWA Install Accepted', {
                             'event_category': 'PWA',
                             'event_label': 'Install Accepted'
                         });
                     } else {
                         console.log('User dismissed the A2HS prompt');
-                        // Track dismissal
                         gtag('event', 'PWA Install Dismissed', {
                             'event_category': 'PWA',
                             'event_label': 'Install Dismissed'
@@ -155,17 +117,14 @@ $(window).on('load', function () {
             }
         });
 
-        // Handle the close popup button click
         closePopupButton.addEventListener('click', () => {
             popup.style.display = 'none'; // Hide the popup
         });
 
-        // Listen for the 'appinstalled' event
         window.addEventListener('appinstalled', () => {
             console.log('PWA was installed');
             localStorage.setItem('pwaInstalled', 'true'); // Save the flag in localStorage
             popup.style.display = 'none'; // Hide the popup
-            // Track the PWA installation
             gtag('event', 'PWA Installed', {
                 'event_category': 'PWA',
                 'event_label': 'PWA Installed'
