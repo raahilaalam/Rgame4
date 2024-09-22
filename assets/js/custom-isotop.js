@@ -98,6 +98,9 @@ $(window).on('load', function () {
 
         // Handle the install button click
         installButton.addEventListener('click', () => {
+            // Immediately hide the popup before prompting the user
+            popup.style.display = 'none';
+
             if (deferredPrompt) {
                 deferredPrompt.prompt(); // Show the install prompt
 
@@ -116,13 +119,25 @@ $(window).on('load', function () {
                         });
                     }
                     deferredPrompt = null;
-                    popup.style.display = 'none'; // Hide the popup
                 });
             }
         });
 
+        // Handle the close popup button click
         closePopupButton.addEventListener('click', () => {
-            popup.style.display = 'none'; // Hide the popup
+            // Hide the popup immediately without lag
+            popup.style.display = 'none';
+
+            // Set a timeout to ensure it's fully removed from the display stack
+            setTimeout(() => {
+                popup.style.display = 'none';
+            }, 10); // small delay to ensure DOM update
+
+            // Log and track the close event
+            gtag('event', 'PWA Popup Closed', {
+                'event_category': 'PWA',
+                'event_label': 'Popup Closed'
+            });
         });
 
         window.addEventListener('appinstalled', () => {
