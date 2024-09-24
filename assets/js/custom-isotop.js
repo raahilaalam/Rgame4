@@ -26,8 +26,9 @@ $(window).on('load', function () {
     // PWA Installation Code
     let deferredPrompt;
     const isPwaInstalled = localStorage.getItem('pwaInstalled');
+    const popupShownThisSession = sessionStorage.getItem('popupShown'); // To avoid showing the popup multiple times in one session
 
-    if (!isPwaInstalled && !isMobileDevice()) {
+    if (!isPwaInstalled && !popupShownThisSession && !isMobileDevice()) {
         // Create and append the popup HTML (desktop only)
         const popupHTML = `
             <div id="pwa-popup" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.8); color: #333; text-align: center; z-index: 1000; display: flex; align-items: center; justify-content: center;">
@@ -55,7 +56,11 @@ $(window).on('load', function () {
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault(); // Prevent the default prompt
             deferredPrompt = e;
-            popup.style.display = 'flex'; // Show the popup
+
+            if (!sessionStorage.getItem('popupShown')) {
+                popup.style.display = 'flex'; // Show the popup
+                sessionStorage.setItem('popupShown', 'true'); // Mark the popup as shown for this session
+            }
 
             try {
                 gtag('event', 'PWA Install Prompt', {
@@ -94,6 +99,7 @@ $(window).on('load', function () {
                                 } catch (e) {
                                     console.error('Google Analytics tracking failed', e);
                                 }
+                                localStorage.setItem('pwaInstalled', 'true');
                             } else {
                                 console.log('User dismissed the A2HS prompt');
                                 try {
@@ -116,6 +122,7 @@ $(window).on('load', function () {
         // Handle the close popup button click
         closePopupButton.addEventListener('click', () => {
             popup.style.display = 'none';
+            sessionStorage.setItem('popupShown', 'true'); // Mark popup as closed
             try {
                 gtag('event', 'PWA Popup Closed', {
                     'event_category': 'PWA',
