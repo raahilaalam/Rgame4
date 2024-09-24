@@ -26,18 +26,18 @@ $(window).on('load', function () {
     // PWA Installation Code
     let deferredPrompt;
     const isPwaInstalled = localStorage.getItem('pwaInstalled');
-    const popupShownThisSession = sessionStorage.getItem('popupShown'); // To avoid showing the popup multiple times in one session
+    const popupShownThisSession = sessionStorage.getItem('popupShown');
 
     if (!isPwaInstalled && !popupShownThisSession && !isMobileDevice()) {
         // Create and append the popup HTML (desktop only)
         const popupHTML = `
             <div id="pwa-popup" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.8); color: #333; text-align: center; z-index: 1000; display: flex; align-items: center; justify-content: center;">
                 <div style="padding: 25px; background: #f5f5f5; border-radius: 20px; width: 90%; max-width: 450px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); text-align: center;">
-                    <h2 style="font-size: 22px; margin-bottom: 15px; color: #2c3e50; animation: fadeInDown 1s;">Hey there! 👋</h2>
-                    <p style="font-size: 16px; color: #444; margin-bottom: 25px; font-weight: bold; color: #ff7f50; animation: pulseText 2s infinite;">
+                    <h2 style="font-size: 22px; margin-bottom: 15px; color: #2c3e50;">Hey there! 👋</h2>
+                    <p style="font-size: 16px; color: #444; margin-bottom: 25px; font-weight: bold; color: #ff7f50;">
                         Don't Miss Out - <span style="color: #ff4500;">Install Our</span> Desktop App!
                     </p>
-                    <button id="install-button" style="padding: 12px 28px; font-size: 18px; cursor: pointer; background: linear-gradient(135deg, #ff7f50, #ff4500); color: white; border: none; border-radius: 30px; margin-right: 10px; transition: all 0.3s ease; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); align-items: center;">
+                    <button id="install-button" style="padding: 12px 28px; font-size: 18px; cursor: pointer; background: linear-gradient(135deg, #ff7f50, #ff4500); color: white; border: none; border-radius: 30px; margin-right: 10px; transition: all 0.3s ease;">
                         <i class="fas fa-download" style="margin-right: 10px; font-size: 20px;"></i>Add to Home Screen
                     </button>
                     <button id="close-popup" style="padding: 12px 28px; font-size: 18px; cursor: pointer; background-color: transparent; color: #888; border: none; border-radius: 30px; transition: color 0.3s ease;">
@@ -52,13 +52,13 @@ $(window).on('load', function () {
         const installButton = document.getElementById('install-button');
         const closePopupButton = document.getElementById('close-popup');
 
-        // Listen for the 'beforeinstallprompt' event after site has fully loaded
+        // Listen for the 'beforeinstallprompt' event after the site has fully loaded
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault(); // Prevent the default prompt
             deferredPrompt = e;
 
             if (!sessionStorage.getItem('popupShown')) {
-                popup.style.display = 'flex'; // Show the popup
+                popup.style.display = 'flex'; // Show the popup immediately
                 sessionStorage.setItem('popupShown', 'true'); // Mark the popup as shown for this session
             }
 
@@ -72,50 +72,39 @@ $(window).on('load', function () {
             }
         });
 
-        // Handle the install button click with countdown logic
+        // Handle the install button click
         installButton.addEventListener('click', () => {
             if (deferredPrompt) {
-                let countdown = 3; // Set countdown to 5 seconds
-                installButton.innerHTML = `Installing in ${countdown}s...`;
+                installButton.innerHTML = 'Installing...'; // Show installing status immediately
 
-                const countdownInterval = setInterval(() => {
-                    countdown--;
-                    installButton.innerHTML = `Installing in ${countdown}s...`;
+                deferredPrompt.prompt(); // Show the install prompt
 
-                    if (countdown === 0) {
-                        clearInterval(countdownInterval);
-                        installButton.innerHTML = 'Installing...'; // Show installing status
-
-                        deferredPrompt.prompt(); // Show the install prompt
-
-                        deferredPrompt.userChoice.then((choiceResult) => {
-                            if (choiceResult.outcome === 'accepted') {
-                                console.log('User accepted the A2HS prompt');
-                                try {
-                                    gtag('event', 'PWA Install Accepted', {
-                                        'event_category': 'PWA',
-                                        'event_label': 'Install Accepted'
-                                    });
-                                } catch (e) {
-                                    console.error('Google Analytics tracking failed', e);
-                                }
-                                localStorage.setItem('pwaInstalled', 'true');
-                            } else {
-                                console.log('User dismissed the A2HS prompt');
-                                try {
-                                    gtag('event', 'PWA Install Dismissed', {
-                                        'event_category': 'PWA',
-                                        'event_label': 'Install Dismissed'
-                                    });
-                                } catch (e) {
-                                    console.error('Google Analytics tracking failed', e);
-                                }
-                            }
-                            deferredPrompt = null;
-                            popup.style.display = 'none'; // Hide the popup
-                        });
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('User accepted the A2HS prompt');
+                        try {
+                            gtag('event', 'PWA Install Accepted', {
+                                'event_category': 'PWA',
+                                'event_label': 'Install Accepted'
+                            });
+                        } catch (e) {
+                            console.error('Google Analytics tracking failed', e);
+                        }
+                        localStorage.setItem('pwaInstalled', 'true');
+                    } else {
+                        console.log('User dismissed the A2HS prompt');
+                        try {
+                            gtag('event', 'PWA Install Dismissed', {
+                                'event_category': 'PWA',
+                                'event_label': 'Install Dismissed'
+                            });
+                        } catch (e) {
+                            console.error('Google Analytics tracking failed', e);
+                        }
                     }
-                }, 1000); // Update every second
+                    deferredPrompt = null;
+                    popup.style.display = 'none'; // Hide the popup
+                });
             }
         });
 
@@ -133,7 +122,7 @@ $(window).on('load', function () {
             }
         });
 
-        // Hide popup when app is installed
+        // Hide popup when the app is installed
         window.addEventListener('appinstalled', () => {
             console.log('PWA was installed');
             localStorage.setItem('pwaInstalled', 'true'); // Save the flag in localStorage
