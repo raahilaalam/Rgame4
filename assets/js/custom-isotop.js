@@ -1,4 +1,5 @@
 $(window).on('load', function () {
+
     // Google Analytics Tracking
     const googleAnalyticsScript = document.createElement('script');
     googleAnalyticsScript.async = true;
@@ -25,7 +26,7 @@ $(window).on('load', function () {
 
         installButton.addEventListener('click', () => {
             // Hide the button once clicked
-            installButton.style.display = 'none'; 
+            installButton.style.display = 'none';
             // Show the install prompt
             deferredPrompt.prompt();
 
@@ -56,4 +57,32 @@ $(window).on('load', function () {
             'event_label': 'PWA Installed'
         });
     });
+
+    // Isotope filtering functionality
+    var $container = $('.gamesContainer');
+    $container.isotope({
+        filter: '*',
+        animationOptions: {
+            duration: 750,
+            easing: 'linear',
+            queue: false
+        }
+    });
+
+    $('.projectFilter a').on('click', function () {
+        $('.projectFilter .current').removeClass('current');
+        $(this).addClass('current');
+
+        var selector = $(this).attr('data-filter');
+        $container.isotope({
+            filter: selector,
+            animationOptions: {
+                duration: 750,
+                easing: 'linear',
+                queue: false
+            }
+        });
+        return false;
+    });
+
 });
