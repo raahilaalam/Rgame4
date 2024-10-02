@@ -20,16 +20,14 @@ $(window).on('load', function () {
         e.preventDefault(); // Prevent the default prompt from being shown immediately
         deferredPrompt = e; // Stash the event so it can be triggered later
 
-        // Show the install button (you need to add this button in your HTML)
         const installButton = document.getElementById('installButton');
-        installButton.style.display = 'block'; // Show the button to the user
+        requestAnimationFrame(() => {
+            installButton.style.display = 'block'; // Show the button to the user at the next paint cycle
+        });
 
         installButton.addEventListener('click', () => {
-            // Hide the button once clicked
-            installButton.style.display = 'none';
-            // Show the install prompt
-            deferredPrompt.prompt();
-
+            installButton.style.display = 'none'; // Hide the button once clicked
+            deferredPrompt.prompt(); // Show the install prompt
             deferredPrompt.userChoice.then((choiceResult) => {
                 if (choiceResult.outcome === 'accepted') {
                     console.log('User accepted the PWA install prompt');
@@ -74,13 +72,15 @@ $(window).on('load', function () {
         $(this).addClass('current');
 
         var selector = $(this).attr('data-filter');
-        $container.isotope({
-            filter: selector,
-            animationOptions: {
-                duration: 750,
-                easing: 'linear',
-                queue: false
-            }
+        requestAnimationFrame(() => {
+            $container.isotope({
+                filter: selector,
+                animationOptions: {
+                    duration: 750,
+                    easing: 'linear',
+                    queue: false
+                }
+            });
         });
         return false;
     });
