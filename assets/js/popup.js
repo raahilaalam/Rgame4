@@ -5,20 +5,21 @@ const closeButton = document.getElementById('close-button');
 
 // Handle the beforeinstallprompt event
 window.addEventListener('beforeinstallprompt', (e) => {
-  // Prevent the mini-infobar from appearing
   e.preventDefault();
-  // Stash the event so it can be triggered later
   deferredPrompt = e;
-  // Check if the PWA is already installed
+
+  // Only show the popup if not already installed
   if (!window.matchMedia('(display-mode: standalone)').matches) {
-    pwaPopup.style.display = 'flex'; // Show the popup
+    requestAnimationFrame(() => {
+      pwaPopup.style.display = 'flex';
+    });
   }
 });
 
 // Handle the install button click
 installButton.addEventListener('click', () => {
-  pwaPopup.style.display = 'none'; // Hide the popup
-  deferredPrompt.prompt(); // Show the install prompt
+  pwaPopup.style.display = 'none'; 
+  deferredPrompt.prompt();
   deferredPrompt.userChoice.then((choiceResult) => {
     if (choiceResult.outcome === 'accepted') {
       console.log('User accepted the A2HS prompt');
@@ -31,7 +32,7 @@ installButton.addEventListener('click', () => {
 
 // Handle the close button click
 closeButton.addEventListener('click', () => {
-  pwaPopup.style.display = 'none'; // Hide the popup
+  pwaPopup.style.display = 'none'; 
 });
 
 // Hide the popup if the app is already installed
