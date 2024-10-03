@@ -16,7 +16,7 @@ $(window).on('load', function () {
 function addManifestLink() {
     const manifestLink = document.createElement('link');
     manifestLink.rel = 'manifest';
-    manifestLink.href = 'https://faf-games.github.io/manifest.json';
+    manifestLink.href = 'https://faf-games.github.io/manifest.json'; // Your manifest URL
     document.head.appendChild(manifestLink);
 }
 
@@ -59,35 +59,57 @@ function setupProjectFilter() {
 // Function to setup the PWA install prompt (desktop only)
 function setupPWAInstallPrompt() {
     let deferredPrompt;
-    const isMobile = window.matchMedia("(max-width: 767px)").matches;
+    const isMobile = window.matchMedia("(max-width: 767px)").matches; // Don't show on mobile
 
     if (!isMobile) {
         window.addEventListener('beforeinstallprompt', (e) => {
+            // Prevent the default mini-infobar from showing
             e.preventDefault();
             deferredPrompt = e;
 
-            // Show install button after prompt is ready
-            $('#installButton').show();
+            // Show the install prompt immediately when the user visits the site
+            showInstallPrompt();
 
-            $('#installButton').on('click', () => {
-                deferredPrompt.prompt();  // Trigger the install prompt
-                deferredPrompt.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === 'accepted') {
-                        console.log('User accepted the install prompt');
-                        gtag('event', 'pwa_install', {
-                            'event_category': 'PWA',
-                            'event_label': 'App Installed'
-                        });
-                    } else {
-                        console.log('User dismissed the install prompt');
-                        gtag('event', 'pwa_dismiss', {
-                            'event_category': 'PWA',
-                            'event_label': 'Prompt Dismissed'
-                        });
-                    }
-                    deferredPrompt = null;
-                });
+            // Track that the install prompt became available
+            gtag('event', 'pwa_prompt_available', {
+                'event_category': 'PWA',
+                'event_label': 'Prompt Available'
             });
         });
     }
+
+    // Function to show the PWA install prompt
+    function showInstallPrompt() {
+        if (deferredPrompt) {
+            deferredPrompt.prompt(); // Show the prompt
+            deferredPrompt.userChoice.then((choiceResult) => {
+                if (choiceResult.outcome === 'accepted') {
+                    console.log('User accepted the install prompt');
+                    // Track the install event
+                    gtag('event', 'pwa_install', {
+                        'event_category': 'PWA',
+                        'event_label': 'App Installed'
+                    });
+                } else {
+                    console.log('User dismissed the install prompt');
+                    // Track the dismiss event
+                    gtag('event', 'pwa_dismiss', {
+                        'event_category': 'PWA',
+                        'event_label': 'Prompt Dismissed'
+                    });
+                }
+                deferredPrompt = null; // Clear the deferred prompt
+            });
+        }
+    }
+
+    // Track if the app is installed
+    window.addEventListener('appinstalled', (evt) => {
+        console.log('PWA was installed');
+        // Track that the PWA was successfully installed
+        gtag('event', 'pwa_installed', {
+            'event_category': 'PWA',
+            'event_label': 'App Installed After AppInstalled Event'
+        });
+    });
 }
