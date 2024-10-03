@@ -89,19 +89,33 @@ function setupPwaInstallation() {
         });
 
         installButton.addEventListener('click', () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                deferredPrompt.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === 'accepted') {
-                        gtag('event', 'pwa_installed', {
-                            'event_category': 'PWA',
-                            'event_label': 'PWA Installed'
+            let countdown = 3; // Countdown starts from 3 seconds
+            installButton.disabled = true; // Disable the button during countdown
+
+            const countdownInterval = setInterval(() => {
+                installButton.textContent = `Installing in ${countdown}...`; // Update button text with countdown
+                countdown--;
+
+                if (countdown < 0) {
+                    clearInterval(countdownInterval); // Stop the countdown
+                    installButton.textContent = "Installing..."; // Final text after countdown
+
+                    if (deferredPrompt) {
+                        deferredPrompt.prompt(); // Trigger the PWA installation prompt
+
+                        deferredPrompt.userChoice.then((choiceResult) => {
+                            if (choiceResult.outcome === 'accepted') {
+                                gtag('event', 'pwa_installed', {
+                                    'event_category': 'PWA',
+                                    'event_label': 'PWA Installed'
+                                });
+                            }
+                            deferredPrompt = null;
+                            popup.style.display = 'none'; // Hide the popup
                         });
                     }
-                    deferredPrompt = null;
-                    popup.style.display = 'none';
-                });
-            }
+                }
+            }, 1000); // 1 second interval for countdown
         });
 
         closePopupButton.addEventListener('click', () => {
@@ -121,9 +135,4 @@ function setupPwaInstallation() {
             });
         });
     }
-}
-
-// Function to detect mobile devices
-function isMobileDevice() {
-    return window.matchMedia("(max-width: 767px)").matches || /Mobi|Android/i.test(navigator.userAgent);
 }
