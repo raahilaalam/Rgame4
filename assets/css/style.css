@@ -64,9 +64,100 @@ This files contents are outlined below >>>>
 ==================================================*/
 
 
+
 * {
-    cursor: none !important;
+
 }
+
+.lazy {
+    opacity: 0;
+    transition: opacity 0.3s ease-in;
+}
+
+.lazy-loaded {
+    opacity: 1;
+}
+
+
+
+.cookie-consent-banner {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #333;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    z-index: 1000;
+    display: none; /* Hidden by default */
+}
+
+.cookie-consent-banner p {
+    margin: 0;
+    display: inline;
+}
+
+.cookie-consent-banner button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin-left: 20px;
+    cursor: pointer;
+}
+
+
+
+
+/* Style the search box container */
+.search-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* Style the search input field */
+.search-input {
+  width: 60%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0px 0px 5px #aaa;
+  transition: width 0.4s ease-in-out;
+}
+
+/* Style the search button */
+.search-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  color: white;
+  background-color: #007BFF;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 5px;
+  box-shadow: 0px 0px 5px #aaa;
+  transition: background-color 0.3s ease;
+}
+
+/* Hover effect for search button */
+.search-button:hover {
+  background-color: #0056b3;
+}
+
+/* Responsive design for smaller screens */
+@media screen and (max-width: 600px) {
+  .search-input {
+    width: 80%;
+  }
+
+  .search-button {
+    width: 100%;
+    margin-top: 10px;
+  }
+}
+
+
 
 
 html {
@@ -110,6 +201,7 @@ body {
 
 img {
     max-width: 100%;
+	border-radius: 10%;
     height: auto
 }
 
@@ -150,8 +242,9 @@ h6 {
 a {
     -webkit-transition: all 0.4s ease 0s;
     transition: all 0.4s ease 0s;
-    color: #fff;
-    text-decoration: none
+    color: white;
+    text-decoration: none;
+     text-wrap: nowrap;
 }
 
 a:focus {
@@ -271,7 +364,7 @@ li {
 .fag-btn:hover {
     background: transparent;
     border-color: #ff7a21;
-    color: #fff;
+    color: #ff7a21;
 }
 
 .site-heading {
@@ -282,14 +375,14 @@ li {
     margin: 0 auto 30px;
 }
 
-.site-heading h2 {
+.site-heading h1 {
     text-transform: uppercase;
     font-size: 60px;
     line-height: 45px;
     margin-bottom: 30px;
     font-weight: 700;
     display: block;
-    color: #fff;
+    color: #ff7a21;
     letter-spacing: 0.03em;
     position: relative;
     padding-bottom: 5px;
@@ -297,7 +390,7 @@ li {
     transition: all 850ms ease
 }
 
-.site-heading h2:after {
+.site-heading h1:after {
     position: absolute;
     content: "";
     width: 0px;
@@ -308,7 +401,7 @@ li {
     left: 50%;
     top: 100%;
     -webkit-transform: translate(-50%, 100%);
-            transform: translate(-50%, 100%);
+	transform: translate(-50%, 100%);
     -webkit-transition: all 850ms ease;
     transition: all 850ms ease
 }
@@ -318,7 +411,7 @@ li {
 }
 
 .site-heading h2 span {
-    color: #ff7a21
+    color: #ff7a21;
 }
 
 .site-heading p {
@@ -335,7 +428,7 @@ li {
 }
 
 .section_140 {
-    padding: 140px 0;
+    padding: 50px 0;
 }
 
 .section_70 {
@@ -536,7 +629,7 @@ li {
 ==================================================*/
 
 .fag-breadcrumb-area {
-    padding: 170px 0 100px;
+        padding: 70px 0 0;
     background: url(../img/breadcrumb_bg.jpg) no-repeat scroll center center/cover
 }
 
@@ -1369,6 +1462,7 @@ span.is-active {
 
 .games-desc {
     padding: 20px;
+    text-align: center;
 }
 
 .games-thumb {
@@ -2037,11 +2131,9 @@ span.is-active {
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
     z-index: -1;
 }
-.ads-footer-top-area {
-    margin: 0 auto;
-}
+
 .footer-top-area {
-    padding: 70px 0 100px;
+	padding: 
     position: relative;
 }
 .single-footer {
@@ -2794,7 +2886,7 @@ button.fag-btn:hover {
     color: #fff
 }
 .related_games{
-    padding-bottom: 70px
+    padding-bottom: 0
 }
 .related_games .games-single-item{
     margin-bottom: 30px
