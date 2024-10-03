@@ -8,22 +8,22 @@ $(window).on('load', function () {
     // Project filter functionality
     setupProjectFilter();
 
-    // Setup PWA install prompt, ensuring it doesn't show on mobile
-    setupPWAInstallPrompt();
+    // PWA installation prompt setup
+    setupPwaInstallation();
 });
 
 // Function to dynamically add the manifest link
 function addManifestLink() {
     const manifestLink = document.createElement('link');
     manifestLink.rel = 'manifest';
-    manifestLink.href = 'https://faf-games.github.io/manifest.json'; // Your manifest URL
+    manifestLink.href = 'https://faf-games.github.io/manifest.json';
     document.head.appendChild(manifestLink);
 }
 
 // Function to setup Google Analytics
 function setupGoogleAnalytics() {
     const googleAnalyticsScript = document.createElement('script');
-    googleAnalyticsScript.async = true;  // Ensure analytics loads async
+    googleAnalyticsScript.async = true;
     googleAnalyticsScript.src = "https://www.googletagmanager.com/gtag/js?id=G-6BPGNZNTLZ";
     document.head.appendChild(googleAnalyticsScript);
 
@@ -56,60 +56,74 @@ function setupProjectFilter() {
     });
 }
 
-// Function to setup the PWA install prompt (desktop only)
-function setupPWAInstallPrompt() {
+// PWA Installation setup
+function setupPwaInstallation() {
     let deferredPrompt;
-    const isMobile = window.matchMedia("(max-width: 767px)").matches; // Don't show on mobile
+    const isPwaInstalled = localStorage.getItem('pwaInstalled');
 
-    if (!isMobile) {
+    if (!isPwaInstalled && !isMobileDevice()) {
+        const popupHTML = `
+            <div id="pwa-popup" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.8); color: #333; text-align: center; z-index: 1000; display: flex; align-items: center; justify-content: center;">
+                <div style="padding: 25px; background: #f5f5f5; border-radius: 20px; width: 90%; max-width: 450px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); text-align: center;">
+                    <h2 style="font-size: 22px; margin-bottom: 15px; color: #2c3e50;">Install the app</h2>
+                    <button id="install-button" style="padding: 12px 28px; font-size: 18px; cursor: pointer; background: #7f2525; color: white; border: none; border-radius: 30px;">Add to Home Screen</button>
+                    <button id="close-popup" style="padding: 12px 28px; font-size: 18px; cursor: pointer; background-color: transparent; color: #888; border: none; border-radius: 30px;">Not Now</button>
+                </div>
+            </div>
+        `;
+        $('body').append(popupHTML);
+
+        const popup = document.getElementById('pwa-popup');
+        const installButton = document.getElementById('install-button');
+        const closePopupButton = document.getElementById('close-popup');
+
         window.addEventListener('beforeinstallprompt', (e) => {
-            // Prevent the default mini-infobar from showing
             e.preventDefault();
             deferredPrompt = e;
+            popup.style.display = 'flex';
 
-            // Show the install prompt immediately when the user visits the site
-            showInstallPrompt();
-
-            // Track that the install prompt became available
-            gtag('event', 'pwa_prompt_available', {
+            gtag('event', 'pwa_install_prompt_shown', {
                 'event_category': 'PWA',
-                'event_label': 'Prompt Available'
+                'event_label': 'PWA Install Prompt'
+            });
+        });
+
+        installButton.addEventListener('click', () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        gtag('event', 'pwa_installed', {
+                            'event_category': 'PWA',
+                            'event_label': 'PWA Installed'
+                        });
+                    }
+                    deferredPrompt = null;
+                    popup.style.display = 'none';
+                });
+            }
+        });
+
+        closePopupButton.addEventListener('click', () => {
+            popup.style.display = 'none';
+            gtag('event', 'pwa_popup_closed', {
+                'event_category': 'PWA',
+                'event_label': 'PWA Popup Closed'
+            });
+        });
+
+        window.addEventListener('appinstalled', () => {
+            localStorage.setItem('pwaInstalled', 'true');
+            popup.style.display = 'none';
+            gtag('event', 'pwa_installed', {
+                'event_category': 'PWA',
+                'event_label': 'PWA Installed'
             });
         });
     }
+}
 
-    // Function to show the PWA install prompt
-    function showInstallPrompt() {
-        if (deferredPrompt) {
-            deferredPrompt.prompt(); // Show the prompt
-            deferredPrompt.userChoice.then((choiceResult) => {
-                if (choiceResult.outcome === 'accepted') {
-                    console.log('User accepted the install prompt');
-                    // Track the install event
-                    gtag('event', 'pwa_install', {
-                        'event_category': 'PWA',
-                        'event_label': 'App Installed'
-                    });
-                } else {
-                    console.log('User dismissed the install prompt');
-                    // Track the dismiss event
-                    gtag('event', 'pwa_dismiss', {
-                        'event_category': 'PWA',
-                        'event_label': 'Prompt Dismissed'
-                    });
-                }
-                deferredPrompt = null; // Clear the deferred prompt
-            });
-        }
-    }
-
-    // Track if the app is installed
-    window.addEventListener('appinstalled', (evt) => {
-        console.log('PWA was installed');
-        // Track that the PWA was successfully installed
-        gtag('event', 'pwa_installed', {
-            'event_category': 'PWA',
-            'event_label': 'App Installed After AppInstalled Event'
-        });
-    });
+// Function to detect mobile devices
+function isMobileDevice() {
+    return window.matchMedia("(max-width: 767px)").matches || /Mobi|Android/i.test(navigator.userAgent);
 }
