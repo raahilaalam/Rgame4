@@ -1019,7 +1019,39 @@
     });
   }
 </script>
-	
+
+<script>
+	let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  // Prevent the default prompt from showing immediately
+  e.preventDefault();
+  deferredPrompt = e;
+  
+  // Show the install button when the event is fired
+  const installButton = document.getElementById('install-button');
+  installButton.style.display = 'block';
+  
+  installButton.addEventListener('click', () => {
+    // Hide the install button after click
+    installButton.style.display = 'none';
+    
+    // Show the prompt
+    deferredPrompt.prompt();
+    
+    // Handle the user's choice
+    deferredPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === 'accepted') {
+        console.log('User accepted the install prompt');
+      } else {
+        console.log('User dismissed the install prompt');
+      }
+      deferredPrompt = null;
+    });
+  });
+});
+
+				 </script>
 			
 	
 </body>
