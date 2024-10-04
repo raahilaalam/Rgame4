@@ -61,13 +61,12 @@ function setupPwaInstallation() {
     let deferredPrompt;
     const isPwaInstalled = localStorage.getItem('pwaInstalled');
 
-    // Display the install button if the PWA is not already installed
     if (!isPwaInstalled && !isMobileDevice()) {
         const popupHTML = `
-            <div id="pwa-popup" style="display: flex; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.8); color: #333; text-align: center; z-index: 1000; display: flex; align-items: center; justify-content: center;">
+            <div id="pwa-popup" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.8); color: #333; text-align: center; z-index: 1000; display: flex; align-items: center; justify-content: center;">
                 <div style="padding: 25px; background: #f5f5f5; border-radius: 20px; width: 90%; max-width: 450px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); text-align: center;">
                     <h2 style="font-size: 22px; margin-bottom: 15px; color: #2c3e50;">Install the app</h2>
-                    <button id="install-button" style="padding: 12px 28px; font-size: 18px; cursor: pointer; background: #7f2525; color: white; border: none; border-radius: 30px;">Install Now</button>
+                    <button id="install-button" style="padding: 12px 28px; font-size: 18px; cursor: pointer; background: #7f2525; color: white; border: none; border-radius: 30px;">Add to Home Screen</button>
                     <button id="close-popup" style="padding: 12px 28px; font-size: 18px; cursor: pointer; background-color: transparent; color: #888; border: none; border-radius: 30px;">Not Now</button>
                 </div>
             </div>
@@ -78,27 +77,31 @@ function setupPwaInstallation() {
         const installButton = document.getElementById('install-button');
         const closePopupButton = document.getElementById('close-popup');
 
-        // Handle the install button click with countdown logic
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            popup.style.display = 'flex';
+
+            gtag('event', 'pwa_install_prompt_shown', {
+                'event_category': 'PWA',
+                'event_label': 'PWA Install Prompt'
+            });
+        });
+
         installButton.addEventListener('click', () => {
-            let countdown = 3; // Set countdown to 3 seconds
-            installButton.disabled = true; // Disable button during countdown
-
-            const countdownInterval = setInterval(() => {
-                installButton.textContent = `Installing in ${countdown}...`; // Update button text with countdown
-                countdown--;
-
-                if (countdown < 0) {
-                    clearInterval(countdownInterval); // Stop the countdown
-                    installButton.textContent = "Installing..."; // Final text after countdown
-
-                    if (deferredPrompt) {
-                        deferredPrompt.prompt(); // Trigger the PWA installation prompt
-                    } else {
-                        // If no 'beforeinstallprompt' event has fired yet, show an alert or handle accordingly
-                        alert("Installation prompt is not available.");
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        gtag('event', 'pwa_installed', {
+                            'event_category': 'PWA',
+                            'event_label': 'PWA Installed'
+                        });
                     }
-                }
-            }, 1000); // 1 second interval for countdown
+                    deferredPrompt = null;
+                    popup.style.display = 'none';
+                });
+            }
         });
 
         closePopupButton.addEventListener('click', () => {
@@ -109,19 +112,6 @@ function setupPwaInstallation() {
             });
         });
 
-        // Listen for the 'beforeinstallprompt' event
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault(); // Prevent the default prompt
-            deferredPrompt = e;
-
-            // You can track this event if needed
-            gtag('event', 'pwa_install_prompt_available', {
-                'event_category': 'PWA',
-                'event_label': 'PWA Install Prompt Available'
-            });
-        });
-
-        // Hide the popup when the app is installed
         window.addEventListener('appinstalled', () => {
             localStorage.setItem('pwaInstalled', 'true');
             popup.style.display = 'none';
@@ -131,4 +121,9 @@ function setupPwaInstallation() {
             });
         });
     }
+}
+
+// Function to detect mobile devices
+function isMobileDevice() {
+    return window.matchMedia("(max-width: 767px)").matches || /Mobi|Android/i.test(navigator.userAgent);
 }
