@@ -1022,7 +1022,7 @@
 </script>
 
 <script>
-	let deferredPrompt;
+let deferredPrompt;
 
 window.addEventListener('beforeinstallprompt', (e) => {
   // Prevent the default prompt from showing immediately
@@ -1039,15 +1039,12 @@ window.addEventListener('beforeinstallprompt', (e) => {
     const countdownElement = document.getElementById('countdown');
 
     const countdownInterval = setInterval(() => {
-      countdownElement.textContent = `(${countdown})`; // Update the button text with the countdown
+      countdownElement.textContent = ` (${countdown})`; // Update the button text with the countdown
       countdown--;
 
       if (countdown < 0) {
         clearInterval(countdownInterval);
         countdownElement.textContent = ''; // Clear the countdown text
-        
-        // Hide the install button
-        installButton.style.display = 'none';
 
         // Show the prompt after countdown finishes
         deferredPrompt.prompt();
