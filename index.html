@@ -131,9 +131,10 @@
 
 <div id="install-button-container" style="position: absolute; top: 10px; right: 10px;">
   <button id="install-button" style="padding: 10px 20px; background-color: #ff6600; color: white; border: none; cursor: pointer;">
-    Install App
+    Install App <span id="countdown"></span>
   </button>
 </div>
+
 
 		    
             </div>
@@ -1027,27 +1028,41 @@ window.addEventListener('beforeinstallprompt', (e) => {
   // Prevent the default prompt from showing immediately
   e.preventDefault();
   deferredPrompt = e;
-  
+
   // Show the install button when the event is fired
   const installButton = document.getElementById('install-button');
   installButton.style.display = 'block';
-  
+
   installButton.addEventListener('click', () => {
-    // Hide the install button after click
-    installButton.style.display = 'none';
-    
-    // Show the prompt
-    deferredPrompt.prompt();
-    
-    // Handle the user's choice
-    deferredPrompt.userChoice.then((choiceResult) => {
-      if (choiceResult.outcome === 'accepted') {
-        console.log('User accepted the install prompt');
-      } else {
-        console.log('User dismissed the install prompt');
+    // Start the countdown before proceeding to the installation
+    let countdown = 3;
+    const countdownElement = document.getElementById('countdown');
+
+    const countdownInterval = setInterval(() => {
+      countdownElement.textContent = `(${countdown})`; // Update the button text with the countdown
+      countdown--;
+
+      if (countdown < 0) {
+        clearInterval(countdownInterval);
+        countdownElement.textContent = ''; // Clear the countdown text
+        
+        // Hide the install button
+        installButton.style.display = 'none';
+
+        // Show the prompt after countdown finishes
+        deferredPrompt.prompt();
+
+        // Handle the user's choice
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            console.log('User accepted the install prompt');
+          } else {
+            console.log('User dismissed the install prompt');
+          }
+          deferredPrompt = null;
+        });
       }
-      deferredPrompt = null;
-    });
+    }, 1000); // Update every second
   });
 });
 
