@@ -56,7 +56,6 @@ function setupProjectFilter() {
     });
 }
 
-// PWA Installation setup
 function setupPwaInstallation() {
     let deferredPrompt;
     const isPwaInstalled = localStorage.getItem('pwaInstalled');
@@ -77,10 +76,11 @@ function setupPwaInstallation() {
         const installButton = document.getElementById('install-button');
         const closePopupButton = document.getElementById('close-popup');
 
+        // Listen for beforeinstallprompt
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            popup.style.display = 'flex';
+            popup.style.display = 'flex'; // Show the popup immediately
 
             gtag('event', 'pwa_install_prompt_shown', {
                 'event_category': 'PWA',
@@ -88,6 +88,7 @@ function setupPwaInstallation() {
             });
         });
 
+        // Handle install button click
         installButton.addEventListener('click', () => {
             if (deferredPrompt) {
                 deferredPrompt.prompt();
@@ -99,11 +100,12 @@ function setupPwaInstallation() {
                         });
                     }
                     deferredPrompt = null;
-                    popup.style.display = 'none';
+                    popup.style.display = 'none'; // Hide popup after install choice
                 });
             }
         });
 
+        // Close the popup
         closePopupButton.addEventListener('click', () => {
             popup.style.display = 'none';
             gtag('event', 'pwa_popup_closed', {
@@ -112,9 +114,10 @@ function setupPwaInstallation() {
             });
         });
 
+        // Handle app installation
         window.addEventListener('appinstalled', () => {
             localStorage.setItem('pwaInstalled', 'true');
-            popup.style.display = 'none';
+            popup.style.display = 'none'; // Hide popup after installation
             gtag('event', 'pwa_installed', {
                 'event_category': 'PWA',
                 'event_label': 'PWA Installed'
