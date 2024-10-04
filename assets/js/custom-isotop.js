@@ -126,6 +126,15 @@ function setupPwaInstallation() {
     }
 }
 
+// Utility function to check if the device is mobile
+function isMobileDevice() {
+    return /Mobi/i.test(window.navigator.userAgent);
+}
+
+// Run the function on page load
+document.addEventListener('DOMContentLoaded', setupPwaInstallation);
+
+
 // Function to detect mobile devices
 function isMobileDevice() {
     return window.matchMedia("(max-width: 767px)").matches || /Mobi|Android/i.test(navigator.userAgent);
