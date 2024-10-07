@@ -56,12 +56,13 @@ function setupProjectFilter() {
     });
 }
 
- function setupPwaInstallation() {
+// Set up PWA installation prompt functionality
+function setupPwaInstallation() {
     let deferredPrompt;
     const isPwaInstalled = localStorage.getItem('pwaInstalled');
 
     if (!isPwaInstalled && !isMobileDevice()) {
-        const popupHTML = 
+        const popupHTML = `
             <div id="pwa-popup" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.8); color: #333; text-align: center; z-index: 1000; display: flex; align-items: center; justify-content: center;">
                 <div style="padding: 25px; background: #f5f5f5; border-radius: 20px; width: 90%; max-width: 450px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); text-align: center;">
                     <h2 style="font-size: 22px; margin-bottom: 15px; color: #2c3e50;">Install the app</h2>
@@ -69,7 +70,7 @@ function setupProjectFilter() {
                     <button id="close-popup" style="padding: 12px 28px; font-size: 18px; cursor: pointer; background-color: transparent; color: #888; border: none; border-radius: 30px;">Not Now</button>
                 </div>
             </div>
-        ;
+        `;
         $('body').append(popupHTML);
 
         const popup = document.getElementById('pwa-popup');
