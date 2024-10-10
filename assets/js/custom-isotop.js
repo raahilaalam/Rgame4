@@ -2,13 +2,13 @@ $(window).on('load', function () {
     // Add the manifest link dynamically
     addManifestLink();
 
-    // Google Analytics tracking setup
+    // Set up Google Analytics tracking
     setupGoogleAnalytics();
 
-    // Project filter functionality
+    // Set up project filter functionality
     setupProjectFilter();
 
-    // PWA installation prompt setup
+    // Set up PWA installation prompt functionality
     setupPwaInstallation();
 });
 
@@ -17,14 +17,18 @@ function addManifestLink() {
     const manifestLink = document.createElement('link');
     manifestLink.rel = 'manifest';
     manifestLink.href = 'https://faf-games.github.io/manifest.json';
+
     document.head.appendChild(manifestLink);
+
+    console.log('Manifest added:', manifestLink.href);
 }
 
-// Function to setup Google Analytics
+// Function to set up Google Analytics
 function setupGoogleAnalytics() {
     const googleAnalyticsScript = document.createElement('script');
     googleAnalyticsScript.async = true;
     googleAnalyticsScript.src = "https://www.googletagmanager.com/gtag/js?id=G-6BPGNZNTLZ";
+    
     document.head.appendChild(googleAnalyticsScript);
 
     googleAnalyticsScript.onload = function () {
@@ -32,6 +36,8 @@ function setupGoogleAnalytics() {
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
         gtag('config', 'G-6BPGNZNTLZ');
+
+        console.log('Google Analytics setup complete.');
     };
 }
 
@@ -52,8 +58,11 @@ function setupProjectFilter() {
                 }
             });
         });
+
         return false;
     });
+
+    console.log('Project filter setup complete.');
 }
 
 // Set up PWA installation prompt functionality
@@ -71,59 +80,55 @@ function setupPwaInstallation() {
                 </div>
             </div>
         `;
+        
         $('body').append(popupHTML);
 
         const popup = document.getElementById('pwa-popup');
         const installButton = document.getElementById('install-button');
         const closePopupButton = document.getElementById('close-popup');
 
-        // Listen for beforeinstallprompt
+        // Listen for the beforeinstallprompt event
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            popup.style.display = 'flex'; // Show the popup immediately
+            popup.style.display = 'flex'; // Show the popup
 
-            gtag('event', 'pwa_install_prompt_shown', {
-                'event_category': 'PWA',
-                'event_label': 'PWA Install Prompt'
-            });
+            console.log('beforeinstallprompt event triggered');
         });
 
         // Handle install button click
         installButton.addEventListener('click', () => {
             if (deferredPrompt) {
+                console.log('Install button clicked');
                 deferredPrompt.prompt();
                 deferredPrompt.userChoice.then((choiceResult) => {
                     if (choiceResult.outcome === 'accepted') {
-                        gtag('event', 'pwa_installed', {
-                            'event_category': 'PWA',
-                            'event_label': 'PWA Installed'
-                        });
+                        console.log('PWA installation accepted');
+                    } else {
+                        console.log('PWA installation dismissed');
                     }
                     deferredPrompt = null;
-                    popup.style.display = 'none'; // Hide popup after install choice
+                    popup.style.display = 'none'; // Hide popup after choice
                 });
+            } else {
+                console.error('deferredPrompt is not set. beforeinstallprompt event might not have fired.');
             }
         });
 
         // Close the popup
         closePopupButton.addEventListener('click', () => {
             popup.style.display = 'none';
-            gtag('event', 'pwa_popup_closed', {
-                'event_category': 'PWA',
-                'event_label': 'PWA Popup Closed'
-            });
+            console.log('PWA popup closed.');
         });
 
         // Handle app installation
         window.addEventListener('appinstalled', () => {
             localStorage.setItem('pwaInstalled', 'true');
             popup.style.display = 'none'; // Hide popup after installation
-            gtag('event', 'pwa_installed', {
-                'event_category': 'PWA',
-                'event_label': 'PWA Installed'
-            });
+            console.log('PWA installed successfully.');
         });
+    } else {
+        console.log('PWA is already installed or device is mobile.');
     }
 }
 
