@@ -16,7 +16,8 @@ $(window).on('load', function () {
 function addManifestLink() {
     const manifestLink = document.createElement('link');
     manifestLink.rel = 'manifest';
-    manifestLink.href = 'https://faf-games.github.io/manifest.json';
+    // Ensure the manifest URL is absolute to work on all pages
+    manifestLink.href = '/manifest.json';
 
     document.head.appendChild(manifestLink);
 
@@ -43,20 +44,23 @@ function setupGoogleAnalytics() {
 
 // Set up project filter functionality
 function setupProjectFilter() {
+    const $container = $('.projectContainer'); // Ensure container reference
     $('.projectFilter a').on('click', function () {
         $('.projectFilter .current').removeClass('current');
         $(this).addClass('current');
 
         const selector = $(this).attr('data-filter');
         requestAnimationFrame(() => {
-            $container.isotope({
-                filter: selector,
-                animationOptions: {
-                    duration: 750,
-                    easing: 'linear',
-                    queue: false
-                }
-            });
+            if ($container.length) {
+                $container.isotope({
+                    filter: selector,
+                    animationOptions: {
+                        duration: 750,
+                        easing: 'linear',
+                        queue: false
+                    }
+                });
+            }
         });
 
         return false;
@@ -80,7 +84,7 @@ function setupPwaInstallation() {
                 </div>
             </div>
         `;
-        
+
         $('body').append(popupHTML);
 
         const popup = document.getElementById('pwa-popup');
@@ -99,26 +103,23 @@ function setupPwaInstallation() {
         // Handle install button click
         installButton.addEventListener('click', () => {
             if (deferredPrompt) {
-                console.log('Install button clicked');
                 deferredPrompt.prompt();
                 deferredPrompt.userChoice.then((choiceResult) => {
                     if (choiceResult.outcome === 'accepted') {
                         console.log('PWA installation accepted');
+                        localStorage.setItem('pwaInstalled', 'true');
                     } else {
                         console.log('PWA installation dismissed');
                     }
                     deferredPrompt = null;
                     popup.style.display = 'none'; // Hide popup after choice
                 });
-            } else {
-                console.error('deferredPrompt is not set. beforeinstallprompt event might not have fired.');
             }
         });
 
         // Close the popup
         closePopupButton.addEventListener('click', () => {
             popup.style.display = 'none';
-            console.log('PWA popup closed.');
         });
 
         // Handle app installation
