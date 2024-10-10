@@ -1087,6 +1087,30 @@ window.addEventListener('beforeinstallprompt', (e) => {
 });
 
 				 </script>
+	<script>
+
+	installButton.addEventListener('click', () => {
+    if (deferredPrompt) {
+        console.log('Install button clicked');
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+            console.log('User choice result:', choiceResult);
+            if (choiceResult.outcome === 'accepted') {
+                console.log('PWA installation accepted');
+                localStorage.setItem('pwaInstalled', 'true');
+            } else {
+                console.log('PWA installation dismissed');
+            }
+            deferredPrompt = null;
+            popup.style.display = 'none'; // Hide popup after choice
+        }).catch((error) => {
+            console.error('Error during PWA installation:', error);
+        });
+    } else {
+        console.error('deferredPrompt is not set. beforeinstallprompt event might not have fired.');
+    }
+});
+</script>
 			
 	
 </body>
