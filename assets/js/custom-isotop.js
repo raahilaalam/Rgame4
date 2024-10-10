@@ -103,7 +103,8 @@ function setupPwaInstallation() {
         // Handle install button click
         installButton.addEventListener('click', () => {
             if (deferredPrompt) {
-                deferredPrompt.prompt();
+                console.log('Install button clicked');
+                deferredPrompt.prompt(); // Show the installation prompt
                 deferredPrompt.userChoice.then((choiceResult) => {
                     if (choiceResult.outcome === 'accepted') {
                         console.log('PWA installation accepted');
@@ -113,16 +114,21 @@ function setupPwaInstallation() {
                     }
                     deferredPrompt = null;
                     popup.style.display = 'none'; // Hide popup after choice
+                }).catch((error) => {
+                    console.error('Error during PWA installation:', error);
                 });
+            } else {
+                console.error('deferredPrompt is not set. The beforeinstallprompt event might not have fired.');
             }
         });
 
         // Close the popup
         closePopupButton.addEventListener('click', () => {
             popup.style.display = 'none';
+            console.log('PWA popup closed.');
         });
 
-        // Handle app installation
+        // Handle app installation success
         window.addEventListener('appinstalled', () => {
             localStorage.setItem('pwaInstalled', 'true');
             popup.style.display = 'none'; // Hide popup after installation
@@ -137,3 +143,4 @@ function setupPwaInstallation() {
 function isMobileDevice() {
     return window.matchMedia("(max-width: 767px)").matches || /Mobi|Android/i.test(navigator.userAgent);
 }
+
