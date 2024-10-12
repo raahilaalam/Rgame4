@@ -69,12 +69,24 @@ function setupProjectFilter() {
     console.log('Project filter setup complete.');
 }
 
+<script>
 // Set up PWA installation prompt functionality
 function setupPwaInstallation() {
     let deferredPrompt;
     const isPwaInstalled = localStorage.getItem('pwaInstalled');
 
+    // Utility function to check if the device is mobile
+    function isMobileDevice() {
+        return /Mobi|Android/i.test(navigator.userAgent);
+    }
+
+    // Log if PWA setup is initialized
+    console.log("PWA setup initialized");
+
+    // Check if the PWA is already installed or if the device is mobile
     if (!isPwaInstalled && !isMobileDevice()) {
+        console.log("PWA not installed and device is not mobile");
+
         const popupHTML = `
             <div id="pwa-popup" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.8); color: #333; text-align: center; z-index: 1000; display: flex; align-items: center; justify-content: center;">
                 <div style="padding: 25px; background: #f5f5f5; border-radius: 20px; width: 90%; max-width: 450px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); text-align: center;">
@@ -85,7 +97,8 @@ function setupPwaInstallation() {
             </div>
         `;
 
-        $('body').append(popupHTML);
+        // Append the popup to the body
+        document.body.insertAdjacentHTML('beforeend', popupHTML);
 
         const popup = document.getElementById('pwa-popup');
         const installButton = document.getElementById('install-button');
@@ -93,51 +106,67 @@ function setupPwaInstallation() {
 
         // Listen for the beforeinstallprompt event
         window.addEventListener('beforeinstallprompt', (e) => {
+            console.log("beforeinstallprompt event fired");
             e.preventDefault();
             deferredPrompt = e;
             popup.style.display = 'flex'; // Show the popup
-
-            console.log('beforeinstallprompt event triggered');
         });
 
         // Handle install button click
         installButton.addEventListener('click', () => {
             if (deferredPrompt) {
-                console.log('Install button clicked');
+                console.log("Install button clicked, prompting PWA installation");
                 deferredPrompt.prompt(); // Show the installation prompt
                 deferredPrompt.userChoice.then((choiceResult) => {
                     if (choiceResult.outcome === 'accepted') {
-                        console.log('PWA installation accepted');
+                        console.log("PWA installation accepted");
                         localStorage.setItem('pwaInstalled', 'true');
                     } else {
-                        console.log('PWA installation dismissed');
+                        console.log("PWA installation dismissed");
                     }
                     deferredPrompt = null;
                     popup.style.display = 'none'; // Hide popup after choice
                 }).catch((error) => {
-                    console.error('Error during PWA installation:', error);
+                    console.error("Error during PWA installation:", error);
                 });
             } else {
-                console.error('deferredPrompt is not set. The beforeinstallprompt event might not have fired.');
+                console.error("deferredPrompt is not available. The beforeinstallprompt event might not have fired.");
             }
         });
 
-        // Close the popup
+        // Handle closing the popup
         closePopupButton.addEventListener('click', () => {
             popup.style.display = 'none';
-            console.log('PWA popup closed.');
+            console.log("PWA popup closed");
         });
 
-        // Handle app installation success
+        // Listen for the appinstalled event (when the PWA is installed)
         window.addEventListener('appinstalled', () => {
+            console.log("PWA installed successfully");
             localStorage.setItem('pwaInstalled', 'true');
-            popup.style.display = 'none'; // Hide popup after installation
-            console.log('PWA installed successfully.');
+            popup.style.display = 'none'; // Hide popup after successful installation
         });
+
     } else {
-        console.log('PWA is already installed or device is mobile.');
+        console.log("PWA already installed or device is mobile. Skipping prompt.");
     }
 }
+
+// Register the service worker
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/service-worker.js')
+        .then((registration) => {
+            console.log("Service Worker registered successfully:", registration);
+            setupPwaInstallation(); // Initialize PWA setup after service worker registration
+        })
+        .catch((err) => {
+            console.error("Service Worker registration failed:", err);
+        });
+} else {
+    console.error("Service Worker not supported in this browser.");
+}
+</script>
+
 
 // Function to detect mobile devices
 function isMobileDevice() {
