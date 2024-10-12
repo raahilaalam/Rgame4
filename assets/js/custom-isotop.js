@@ -2,6 +2,9 @@ $(window).on('load', function () {
     // Add the manifest link dynamically
     addManifestLink();
 
+    // Register the service worker for PWA functionality
+    registerServiceWorker();
+
     // Set up Google Analytics tracking
     setupGoogleAnalytics();
 
@@ -16,12 +19,27 @@ $(window).on('load', function () {
 function addManifestLink() {
     const manifestLink = document.createElement('link');
     manifestLink.rel = 'manifest';
-    // Ensure the manifest URL is absolute to work on all pages
-    manifestLink.href = '/manifest.json';
+    manifestLink.href = '/manifest.json';  // Ensure the manifest file exists in the root directory
 
     document.head.appendChild(manifestLink);
-
     console.log('Manifest added:', manifestLink.href);
+}
+
+// Function to register the service worker
+function registerServiceWorker() {
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/service-worker.js')
+                .then((registration) => {
+                    console.log('Service Worker registered with scope:', registration.scope);
+                })
+                .catch((error) => {
+                    console.error('Service Worker registration failed:', error);
+                });
+        });
+    } else {
+        console.warn('Service Worker not supported in this browser.');
+    }
 }
 
 // Function to set up Google Analytics
@@ -42,9 +60,9 @@ function setupGoogleAnalytics() {
     };
 }
 
-// Set up project filter functionality
+// Function to set up project filter functionality
 function setupProjectFilter() {
-    const $container = $('.projectContainer'); // Ensure container reference
+    const $container = $('.projectContainer');
     $('.projectFilter a').on('click', function () {
         $('.projectFilter .current').removeClass('current');
         $(this).addClass('current');
@@ -69,8 +87,7 @@ function setupProjectFilter() {
     console.log('Project filter setup complete.');
 }
 
-<script>
-// Set up PWA installation prompt functionality
+// Function to set up PWA installation prompt
 function setupPwaInstallation() {
     let deferredPrompt;
     const isPwaInstalled = localStorage.getItem('pwaInstalled');
@@ -96,7 +113,7 @@ function setupPwaInstallation() {
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            popup.style.display = 'flex'; // Show the popup
+            popup.style.display = 'flex';  // Show the popup
 
             console.log('beforeinstallprompt event triggered');
         });
@@ -104,8 +121,7 @@ function setupPwaInstallation() {
         // Handle install button click
         installButton.addEventListener('click', () => {
             if (deferredPrompt) {
-                console.log('Install button clicked');
-                deferredPrompt.prompt(); // Show the installation prompt
+                deferredPrompt.prompt();  // Show the installation prompt
                 deferredPrompt.userChoice.then((choiceResult) => {
                     if (choiceResult.outcome === 'accepted') {
                         console.log('PWA installation accepted');
@@ -114,12 +130,10 @@ function setupPwaInstallation() {
                         console.log('PWA installation dismissed');
                     }
                     deferredPrompt = null;
-                    popup.style.display = 'none'; // Hide popup after choice
+                    popup.style.display = 'none';  // Hide popup after choice
                 }).catch((error) => {
                     console.error('Error during PWA installation:', error);
                 });
-            } else {
-                console.error('deferredPrompt is not set. The beforeinstallprompt event might not have fired.');
             }
         });
 
@@ -132,7 +146,7 @@ function setupPwaInstallation() {
         // Handle app installation success
         window.addEventListener('appinstalled', () => {
             localStorage.setItem('pwaInstalled', 'true');
-            popup.style.display = 'none'; // Hide popup after installation
+            popup.style.display = 'none';  // Hide popup after installation
             console.log('PWA installed successfully.');
         });
     } else {
@@ -140,9 +154,7 @@ function setupPwaInstallation() {
     }
 }
 
-
 // Function to detect mobile devices
 function isMobileDevice() {
     return window.matchMedia("(max-width: 767px)").matches || /Mobi|Android/i.test(navigator.userAgent);
 }
-
