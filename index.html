@@ -1079,49 +1079,7 @@
   }
 </script>
 
-<script>
-let deferredPrompt;
 
-window.addEventListener('beforeinstallprompt', (e) => {
-  // Prevent the default prompt from showing immediately
-  e.preventDefault();
-  deferredPrompt = e;
-
-  // Show the install button when the event is fired
-  const installButton = document.getElementById('install-button');
-  installButton.style.display = 'block';
-
-  installButton.addEventListener('click', () => {
-    // Start the countdown before proceeding to the installation
-    let countdown = 3;
-    const countdownElement = document.getElementById('countdown');
-
-    const countdownInterval = setInterval(() => {
-      countdownElement.textContent = ` (${countdown})`; // Update the button text with the countdown
-      countdown--;
-
-      if (countdown < 0) {
-        clearInterval(countdownInterval);
-        countdownElement.textContent = ''; // Clear the countdown text
-
-        // Show the prompt after countdown finishes
-        deferredPrompt.prompt();
-
-        // Handle the user's choice
-        deferredPrompt.userChoice.then((choiceResult) => {
-          if (choiceResult.outcome === 'accepted') {
-            console.log('User accepted the install prompt');
-          } else {
-            console.log('User dismissed the install prompt');
-          }
-          deferredPrompt = null;
-        });
-      }
-    }, 1000); // Update every second
-  });
-});
-
-</script>
 
 <script type="text/javascript">
   window._taboola = window._taboola || [];
