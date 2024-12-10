@@ -1,53 +1,49 @@
 $(window).on('load', function () {
-    // Add the manifest link dynamically
-    addManifestLink();
-
-    // Register the service worker for PWA functionality
-    registerServiceWorker();
-
-    // Set up Google Analytics tracking
-    setupGoogleAnalytics();
-
-    // Set up project filter functionality
-    setupProjectFilter();
-
-    // Set up PWA installation prompt functionality
-    setupPwaInstallation();
+    // Initialize features
+    initializePwaFeatures();
+    initializeGoogleAnalytics();
+    initializeProjectFilter();
 });
 
-// Function to dynamically add the manifest link
+// Initialize PWA Features
+function initializePwaFeatures() {
+    addManifestLink();
+    registerServiceWorker();
+    setupPwaInstallation();
+}
+
+// Dynamically add the manifest link
 function addManifestLink() {
     const manifestLink = document.createElement('link');
     manifestLink.rel = 'manifest';
-    manifestLink.href = '/manifest.json';  // Ensure the manifest file exists in the root directory
-
+    manifestLink.href = '/manifest.json'; // Ensure manifest.json exists in the root
     document.head.appendChild(manifestLink);
     console.log('Manifest added:', manifestLink.href);
 }
 
-// Function to register the service worker
+// Register the service worker
 function registerServiceWorker() {
     if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/service-worker.js')
-                .then((registration) => {
-                    console.log('Service Worker registered with scope:', registration.scope);
-                })
-                .catch((error) => {
-                    console.error('Service Worker registration failed:', error);
-                });
-        });
+        navigator.serviceWorker.register('/service-worker.js')
+            .then(registration => {
+                console.log('Service Worker registered with scope:', registration.scope);
+                trackEvent('PWA_service_worker', 'Service Worker', 'Registered', 1);
+            })
+            .catch(error => {
+                console.error('Service Worker registration failed:', error);
+                trackEvent('PWA_service_worker', 'Service Worker', 'Failed', 0);
+            });
     } else {
         console.warn('Service Worker not supported in this browser.');
+        trackEvent('PWA_service_worker', 'Service Worker', 'Not Supported', 0);
     }
 }
 
-// Function to set up Google Analytics
-function setupGoogleAnalytics() {
+// Set up Google Analytics
+function initializeGoogleAnalytics() {
     const googleAnalyticsScript = document.createElement('script');
     googleAnalyticsScript.async = true;
     googleAnalyticsScript.src = "https://www.googletagmanager.com/gtag/js?id=G-6BPGNZNTLZ";
-    
     document.head.appendChild(googleAnalyticsScript);
 
     googleAnalyticsScript.onload = function () {
@@ -55,39 +51,11 @@ function setupGoogleAnalytics() {
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
         gtag('config', 'G-6BPGNZNTLZ');
-
-        console.log('Google Analytics setup complete.');
+        console.log('Google Analytics initialized.');
     };
 }
 
-// Function to set up project filter functionality
-function setupProjectFilter() {
-    const $container = $('.projectContainer');
-    $('.projectFilter a').on('click', function () {
-        $('.projectFilter .current').removeClass('current');
-        $(this).addClass('current');
-
-        const selector = $(this).attr('data-filter');
-        requestAnimationFrame(() => {
-            if ($container.length) {
-                $container.isotope({
-                    filter: selector,
-                    animationOptions: {
-                        duration: 750,
-                        easing: 'linear',
-                        queue: false
-                    }
-                });
-            }
-        });
-
-        return false;
-    });
-
-    console.log('Project filter setup complete.');
-}
-
-// Function to set up PWA installation prompt
+// Set up PWA installation prompt
 function setupPwaInstallation() {
     let deferredPrompt;
     const isPwaInstalled = localStorage.getItem('pwaInstalled');
@@ -102,59 +70,96 @@ function setupPwaInstallation() {
                 </div>
             </div>
         `;
-
         $('body').append(popupHTML);
 
-        const popup = document.getElementById('pwa-popup');
-        const installButton = document.getElementById('install-button');
-        const closePopupButton = document.getElementById('close-popup');
+        const popup = $('#pwa-popup');
+        const installButton = $('#install-button');
+        const closePopupButton = $('#close-popup');
 
-        // Listen for the beforeinstallprompt event
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            popup.style.display = 'flex';  // Show the popup
-
+            popup.show();
             console.log('beforeinstallprompt event triggered');
+            trackEvent('PWA_prompt', 'PWA', 'Prompt Displayed', 1);
         });
 
-        // Handle install button click
-        installButton.addEventListener('click', () => {
+        installButton.on('click', () => {
             if (deferredPrompt) {
-                deferredPrompt.prompt();  // Show the installation prompt
+                deferredPrompt.prompt();
                 deferredPrompt.userChoice.then((choiceResult) => {
                     if (choiceResult.outcome === 'accepted') {
                         console.log('PWA installation accepted');
+                        trackEvent('PWA_installation', 'PWA', 'Accepted', 1);
                         localStorage.setItem('pwaInstalled', 'true');
                     } else {
                         console.log('PWA installation dismissed');
+                        trackEvent('PWA_installation', 'PWA', 'Dismissed', 0);
                     }
                     deferredPrompt = null;
-                    popup.style.display = 'none';  // Hide popup after choice
-                }).catch((error) => {
+                    popup.hide();
+                }).catch(error => {
                     console.error('Error during PWA installation:', error);
                 });
             }
         });
 
-        // Close the popup
-        closePopupButton.addEventListener('click', () => {
-            popup.style.display = 'none';
+        closePopupButton.on('click', () => {
+            popup.hide();
             console.log('PWA popup closed.');
+            trackEvent('PWA_prompt', 'PWA', 'Closed', 0);
         });
 
-        // Handle app installation success
         window.addEventListener('appinstalled', () => {
-            localStorage.setItem('pwaInstalled', 'true');
-            popup.style.display = 'none';  // Hide popup after installation
             console.log('PWA installed successfully.');
+            trackEvent('PWA_installation', 'PWA', 'Successful', 1);
+            localStorage.setItem('pwaInstalled', 'true');
+            popup.hide();
         });
     } else {
         console.log('PWA is already installed or device is mobile.');
     }
 }
 
-// Function to detect mobile devices
+// Detect mobile devices
 function isMobileDevice() {
     return window.matchMedia("(max-width: 767px)").matches || /Mobi|Android/i.test(navigator.userAgent);
+}
+
+// Track events in Google Analytics
+function trackEvent(action, category, label, value) {
+    if (typeof gtag === 'function') {
+        gtag('event', action, {
+            event_category: category,
+            event_label: label,
+            value: value
+        });
+        console.log(`Event tracked: ${action}, ${category}, ${label}, ${value}`);
+    } else {
+        console.warn('gtag not initialized. Event not tracked:', action);
+    }
+}
+
+// Initialize project filter
+function initializeProjectFilter() {
+    const $container = $('.projectContainer');
+    $('.projectFilter a').on('click', function () {
+        $('.projectFilter .current').removeClass('current');
+        $(this).addClass('current');
+        const selector = $(this).attr('data-filter');
+        requestAnimationFrame(() => {
+            if ($container.length) {
+                $container.isotope({
+                    filter: selector,
+                    animationOptions: {
+                        duration: 750,
+                        easing: 'linear',
+                        queue: false
+                    }
+                });
+            }
+        });
+        console.log('Project filter applied:', selector);
+        return false;
+    });
 }
