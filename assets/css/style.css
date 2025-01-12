@@ -1557,7 +1557,7 @@ span.is-active {
     transform: translate(-50%, -50%) scale(1) !important;
 }
 
-.games-desc h2 {
+.games-desc h3 {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -1569,7 +1569,7 @@ span.is-active {
     font-weight: 600
 }
 
-.games-desc h2 a {
+.games-desc h3 a {
     color: #fff
 }
 
