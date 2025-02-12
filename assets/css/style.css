@@ -682,7 +682,7 @@ li {
     padding: 0
 }
 .nav-link:focus, .nav-link:hover {
-    color: inherit;
+    color: #FF7A21;
 }
 .fag-header.scroll {
     background: #000 none repeat scroll 0 0;
